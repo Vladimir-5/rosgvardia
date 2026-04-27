@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Статистика | Командир | Росгвардия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f1e8; }
+        
+        .main-header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .site-logo {
+            width: 48px;
+            height: 48px;
+            background: #880000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .site-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #212121;
+        }
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: #212121;
+            font-family: 'Bitter', serif;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: color 0.3s;
+        }
+        .main-nav a:hover, .main-nav a.active {
+            color: #880000;
+            border-bottom: 3px solid #880000;
+        }
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .commander-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #c9a45a;
+        }
+        .commander-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #c9a45a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .user-name {
+            background: #f5efe6;
+            color: #3d2b1a;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .logout-link {
+            color: #880000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Меню командира — только Мой взвод и Статистика */
+        .commander-nav {
+            background: #f5efe6;
+            padding: 10px 24px;
+            border-bottom: 2px solid #c9a45a;
+            text-align: center;
+        }
+        .commander-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            font-family: 'Bitter', serif;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .commander-nav a:hover, .commander-nav a.active {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 24px; }
+        .page-header { margin-bottom: 2rem; }
+        .page-header h1 { font-size: 1.8rem; color: #3d2b1a; border-bottom: 3px solid #c9a45a; display: inline-block; padding-bottom: 0.5rem; }
+        
+        /* Вкладки */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e0d0c0;
+            padding-bottom: 0.5rem;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover { background: #f5efe6; }
+        .tab-btn.active { background: #c9a45a; color: white; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Сетка занятий */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .topic-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid #c9a45a;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .topic-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .topic-header {
+            background: #3d2b1a;
+            color: #f5e7d9;
+            padding: 0.8rem 1rem;
+        }
+        .topic-header h3 { margin: 0; font-size: 1rem; }
+        .topic-stats {
+            padding: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .topic-progress {
+            flex: 1;
+            height: 8px;
+            background: #e0d0c0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .topic-progress-fill {
+            height: 100%;
+            background: #4caf50;
+            width: 0%;
+        }
+        .topic-percent { font-weight: 700; color: #3d2b1a; }
+        
+        /* Детальная статистика по занятию */
+        .topic-detail {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .topic-title-large {
+            font-size: 1.3rem;
+            color: #3d2b1a;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #c9a45a;
+        }
+        
+        /* Круговая диаграмма */
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        .legend-color.grade2 { background: #f44336; }
+        .legend-color.grade3 { background: #ff9800; }
+        .legend-color.grade4 { background: #2196f3; }
+        .legend-color.grade5 { background: #4caf50; }
+        .legend-color.none { background: #e0e0e0; }
+        
+        .grades-lists {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .grade-list {
+            background: #f5efe6;
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+        .grade-list h4 {
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #c9a45a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .grade-list ul {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .grade-list li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #e0d0c0;
+            font-size: 0.85rem;
+        }
+        
+        /* Список кадетов */
+        .cadets-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .cadet-item {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid #c9a45a;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .cadet-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: #f5efe6;
+        }
+        .cadet-info-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .cadet-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #3d2b1a;
+        }
+        .cadet-details {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .cadet-stats-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .cadet-status {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-active { background: #4caf50; color: white; }
+        .status-inactive { background: #999; color: white; }
+        .grade-badge {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .grade-2 { background: #f8d7da; color: #721c24; }
+        .grade-3 { background: #fff3cd; color: #856404; }
+        .grade-4 { background: #cce5ff; color: #004085; }
+        .grade-5 { background: #d4edda; color: #155724; }
+        .grade-none { background: #f0f0f0; color: #999; }
+        .expand-icon { font-size: 1rem; color: #c9a45a; }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            margin: 2rem auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            background: #3d2b1a;
+            color: #f5e7d9;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+        .modal-header h3 { margin: 0; font-size: 1.1rem; }
+        .modal-close {
+            background: none;
+            border: none;
+            color: #c9a45a;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        .modal-body { padding: 1.5rem; }
+        
+        .detail-info {
+            background: #f5efe6;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .detail-table th, .detail-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #e0d0c0;
+        }
+        .detail-table th {
+            background: #3d2b1a;
+            color: #f5e7d9;
+            font-weight: 600;
+        }
+        
+        .simple-footer {
+            background: #212121;
+            padding: 1.5rem;
+            text-align: center;
+            color: #888;
+            margin-top: 2rem;
+        }
+        .simple-footer-links { margin-top: 0.5rem; }
+        .simple-footer-links a { color: #888; text-decoration: none; margin: 0 15px; font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 10px; }
+            .main-nav ul { flex-direction: column; text-align: center; gap: 10px; }
+            .mobile-menu-toggle { display: block; }
+            .main-nav { display: none; }
+            .main-nav.show { display: block; }
+            .commander-nav a { display: inline-block; margin: 5px 10px; }
+            .cadet-item { flex-direction: column; text-align: center; }
+            .cadet-stats-right { justify-content: center; }
+            .grades-lists { grid-template-columns: 1fr; }
+            .container { padding: 1rem; }
+            .topics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="site-logo">⚜️</div>
+                <span class="site-title">Росгвардия - мои горизонты</span>
+            </div>
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="index.html">Единая модель профориентации</a></li>
+                    <li><a href="institutes.html">Институты ВНГ РФ</a></li>
+                    <li><a href="about.html">О проекте</a></li>
+                </ul>
+            </nav>
+            <div class="user-header" id="userHeader"></div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </header>
+
+    <!-- Меню командира — только Мой взвод и Статистика -->
+    <div class="commander-nav">
+        <a href="commander-platoon.html">👥 Мой взвод</a>
+        <a href="commander-stats.html" class="active">📊 Статистика</a>
+        
+        <a href="commander-chat.html">💬 Чат</a>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📊 Статистика взвода №<span id="platoonNumber"></span></h1>
+        </div>
+        
+        <!-- Вкладки -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="topics">📋 По занятиям</button>
+            <button class="tab-btn" data-tab="cadets">👥 По кадетам</button>
+        </div>
+        
+        <!-- Вкладка: По занятиям -->
+        <div id="tabTopics" class="tab-content active">
+            <div id="topicsGrid" class="topics-grid"></div>
+            <div id="topicDetail" class="topic-detail" style="display: none;"></div>
+        </div>
+        
+        <!-- Вкладка: По кадетам -->
+        <div id="tabCadets" class="tab-content">
+            <div class="filter-bar" style="background: white; border-radius: 1rem; padding: 1rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                <input type="text" id="searchCadet" placeholder="🔍 Поиск по фамилии..." style="padding: 0.5rem 1rem; border: 2px solid #e0d0c0; border-radius: 2rem; flex: 1; min-width: 150px;">
+                <select id="filterStatus" style="padding: 0.5rem 1rem; border: 2px solid #c9a45a; border-radius: 2rem;">
+                    <option value="all">Все кадеты</option>
+                    <option value="active">🟢 Активные</option>
+                    <option value="inactive">⚫ Неактивные</option>
+                </select>
+            </div>
+            <div id="cadetsList" class="cadets-list"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для детальной статистики кадета -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Статистика кадета</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer class="simple-footer">
+        <div class="simple-footer-links">
+            <a href="index.html">Главная</a>
+            <a href="institutes.html">Институты ВНГ РФ</a>
+            <a href="about.html">О проекте</a>
+        </div>
+        <p>© 2026 Росгвардия. Все права защищены.</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('show');
+        }
+
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        function getCadetsByPlatoon(platoon) {
+            const cadets = JSON.parse(localStorage.getItem('cadets') || '[]');
+            return cadets.filter(c => c.platoon === platoon);
+        }
+
+        function getCadetResults(cadetId) {
+            const results = JSON.parse(localStorage.getItem('testResults') || '[]');
+            return results.filter(r => r.cadetId === cadetId);
+        }
+
+        function isCadetActive(cadet) {
+            if (!cadet.lastLogin) return false;
+            const lastLogin = new Date(cadet.lastLogin);
+            const now = new Date();
+            const diffMinutes = (now - lastLogin) / (1000 * 60);
+            return diffMinutes < 1;
+        }
+
+        function getGrade(score, total) {
+            if (score === undefined || score === null) return { grade: null, name: "—", color: "grade-none", fullName: "Не пройдено" };
+            if (score <= 2) return { grade: 2, name: "2", color: "grade-2", fullName: "Неудовлетворительно" };
+            if (score === 3) return { grade: 3, name: "3", color: "grade-3", fullName: "Удовлетворительно" };
+            if (score === 4) return { grade: 4, name: "4", color: "grade-4", fullName: "Хорошо" };
+            return { grade: 5, name: "5", color: "grade-5", fullName: "Отлично" };
+        }
+
+        function getAverageGrade(results) {
+            if (results.length === 0) return { grade: null, name: "—", color: "grade-none" };
+            let totalScore = 0;
+            results.forEach(r => {
+                if (r.score <= 2) totalScore += 2;
+                else if (r.score === 3) totalScore += 3;
+                else if (r.score === 4) totalScore += 4;
+                else totalScore += 5;
+            });
+            const avg = totalScore / results.length;
+            if (avg <= 2) return { grade: 2, name: "2", color: "grade-2" };
+            if (avg <= 3) return { grade: 3, name: "3", color: "grade-3" };
+            if (avg <= 4) return { grade: 4, name: "4", color: "grade-4" };
+            return { grade: 5, name: "5", color: "grade-5" };
+        }
+
+        const topicNames = {
+            1: "Росгвардия", 2: "Герой Романов", 3: "Инженерные войска", 4: "Атомная отрасль",
+            5: "Космическая отрасль", 6: "Аграрная Россия", 7: "Энергетика", 8: "Граф Комаровский",
+            9: "Оборонная промышленность", 10: "Честь и мужество", 11: "Инженер-испытатель", 12: "Кинологи"
+        };
+
+        let currentPlatoon = null;
+        let allCadets = [];
+
+        function getTopicStats(topicId, cadets) {
+            const stats = {
+                total: cadets.length,
+                passed: 0,
+                grade2: 0, grade3: 0, grade4: 0, grade5: 0, none: 0,
+                byGrade: { 2: [], 3: [], 4: [], 5: [], none: [] }
+            };
+            cadets.forEach(cadet => {
+                const results = getCadetResults(cadet.id);
+                const result = results.find(r => r.topicId === topicId);
+                if (result) {
+                    stats.passed++;
+                    const grade = result.score <= 2 ? 2 : result.score === 3 ? 3 : result.score === 4 ? 4 : 5;
+                    if (grade === 2) { stats.grade2++; stats.byGrade[2].push(cadet); }
+                    else if (grade === 3) { stats.grade3++; stats.byGrade[3].push(cadet); }
+                    else if (grade === 4) { stats.grade4++; stats.byGrade[4].push(cadet); }
+                    else { stats.grade5++; stats.byGrade[5].push(cadet); }
+                } else {
+                    stats.none++;
+                    stats.byGrade.none.push(cadet);
+                }
+            });
+            return stats;
+        }
+
+        function renderTopicsGrid() {
+            const container = document.getElementById('topicsGrid');
+            let topicsHtml = '';
+            for (let i = 1; i <= 12; i++) {
+                const stats = getTopicStats(i, allCadets);
+                const percent = stats.total > 0 ? Math.round(stats.passed / stats.total * 100) : 0;
+                topicsHtml += `
+                    <div class="topic-card" onclick="showTopicDetail(${i})">
+                        <div class="topic-header"><h3>Тема ${i}: ${topicNames[i]}</h3></div>
+                        <div class="topic-stats">
+                            <div class="topic-progress"><div class="topic-progress-fill" style="width: ${percent}%;"></div></div>
+                            <div class="topic-percent">${percent}%</div>
+                        </div>
+                        <div class="topic-stats" style="padding-top: 0;">
+                            <span>✅ Прошли: ${stats.passed}/${stats.total}</span>
+                            <span>⭐ Средний балл: ${stats.passed > 0 ? Math.round((stats.grade2*2 + stats.grade3*3 + stats.grade4*4 + stats.grade5*5) / stats.passed * 10) / 10 : '—'}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = topicsHtml;
+        }
+
+        function showTopicDetail(topicId) {
+            const stats = getTopicStats(topicId, allCadets);
+            const total = stats.total;
+            const angle2 = stats.grade2 / total * 360;
+            const angle3 = stats.grade3 / total * 360;
+            const angle4 = stats.grade4 / total * 360;
+            const angle5 = stats.grade5 / total * 360;
+            const angleNone = stats.none / total * 360;
+            let start2 = 0, start3 = angle2, start4 = angle2 + angle3, start5 = angle2 + angle3 + angle4, startNone = angle2 + angle3 + angle4 + angle5;
+            const pieGradient = `conic-gradient(#f44336 ${start2}deg ${start3}deg, #ff9800 ${start3}deg ${start4}deg, #2196f3 ${start4}deg ${start5}deg, #4caf50 ${start5}deg ${startNone}deg, #e0e0e0 ${startNone}deg 360deg)`;
+            
+            const container = document.getElementById('topicDetail');
+            function renderGradeList(cadets, title, gradeClass) {
+                if (cadets.length === 0) return '';
+                return `<div class="grade-list"><h4><span class="grade-badge ${gradeClass}">${title}</span> (${cadets.length})</h4><ul>${cadets.map(c => `<li>${c.name}</li>`).join('')}</ul></div>`;
+            }
+            
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <div class="topic-title-large">Тема ${topicId}: ${topicNames[topicId]}</div>
+                    <button onclick="document.getElementById('topicDetail').style.display='none'" style="background: #c9a45a; border: none; padding: 0.3rem 1rem; border-radius: 2rem; cursor: pointer;">✖ Закрыть</button>
+                </div>
+                <div class="chart-container">
+                    <div style="text-align: center;"><div style="width: 200px; height: 200px; border-radius: 50%; background: ${pieGradient}; margin-bottom: 0.5rem;"></div><div style="font-size: 0.8rem;">Всего кадетов: ${total}</div></div>
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-color grade2"></div><span>Оценка 2: ${stats.grade2} чел. (${Math.round(stats.grade2/total*100)}%)</span></div>
+                        <div class="legend-item"><div class="legend-color grade3"></div><span>Оценка 3: ${stats.grade3} чел. (${Math.round(stats.grade3/total*100)}%)</span></div>
+                        <div class="legend-item"><div class="legend-color grade4"></div><span>Оценка 4: ${stats.grade4} чел. (${Math.round(stats.grade4/total*100)}%)</span></div>
+                        <div class="legend-item"><div class="legend-color grade5"></div><span>Оценка 5: ${stats.grade5} чел. (${Math.round(stats.grade5/total*100)}%)</span></div>
+                        <div class="legend-item"><div class="legend-color none"></div><span>Не пройдено: ${stats.none} чел. (${Math.round(stats.none/total*100)}%)</span></div>
+                    </div>
+                </div>
+                <div class="grades-lists">
+                    ${renderGradeList(stats.byGrade[2], "Оценка 2", "grade-2")}
+                    ${renderGradeList(stats.byGrade[3], "Оценка 3", "grade-3")}
+                    ${renderGradeList(stats.byGrade[4], "Оценка 4", "grade-4")}
+                    ${renderGradeList(stats.byGrade[5], "Оценка 5", "grade-5")}
+                    ${renderGradeList(stats.byGrade.none, "Не пройдено", "grade-none")}
+                </div>
+            `;
+            container.style.display = 'block';
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderCadetsList() {
+    const searchTerm = document.getElementById('searchCadet').value.toLowerCase();
+    const filterStatus = document.getElementById('filterStatus').value;
+    let filtered = allCadets.filter(cadet => {
+        if (searchTerm && !cadet.name.toLowerCase().includes(searchTerm)) return false;
+        const active = isCadetActive(cadet);
+        if (filterStatus === 'active' && !active) return false;
+        if (filterStatus === 'inactive' && active) return false;
+        return true;
+    });
+    const container = document.getElementById('cadetsList');
+    if (filtered.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #888; padding: 2rem;">Нет кадетов, соответствующих фильтрам</p>';
+        return;
+    }
+    container.innerHTML = filtered.map(cadet => {
+        const active = isCadetActive(cadet);
+        const results = getCadetResults(cadet.id);
+        const avgGrade = getAverageGrade(results);
+        const testsDone = results.length;
+        const cadetPhotoUrl = typeof getCadetPhoto === 'function' ? getCadetPhoto(cadet.id) : null;
+        const photoHtml = cadetPhotoUrl ? 
+            `<img src="${cadetPhotoUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #c9a45a;">` : 
+            `<div style="width: 40px; height: 40px; background: #c9a45a; border-radius: 50%; display: flex; align-items: center; justify-content: center;">🎓</div>`;
+        return `
+            <div class="cadet-item" onclick="showCadetDetail(${cadet.id})">
+                <div class="cadet-info-left" style="display: flex; align-items: center; gap: 12px;">
+                    ${photoHtml}
+                    <div>
+                        <div class="cadet-name">${cadet.name}</div>
+                        <div class="cadet-details">📅 ${cadet.birthdate} | 🔑 ${cadet.login}</div>
+                    </div>
+                </div>
+                <div class="cadet-stats-right">
+                    <span class="cadet-status ${active ? 'status-active' : 'status-inactive'}">${active ? '🟢 Активен' : '⚫ Не активен'}</span>
+                    <span class="grade-badge ${avgGrade.color}">Ср. ${avgGrade.name}</span>
+                    <span class="cadet-details">📊 ${testsDone}/12 тем</span>
+                    <span class="expand-icon">▶</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+        function showCadetDetail(cadetId) {
+            const cadet = allCadets.find(c => c.id === cadetId);
+            if (!cadet) return;
+            const results = getCadetResults(cadet.id);
+            const active = isCadetActive(cadet);
+            let topicsHtml = '';
+            for (let i = 1; i <= 12; i++) {
+                const result = results.find(r => r.topicId === i);
+                const gradeInfo = result ? getGrade(result.score, result.totalQuestions) : { name: "—", color: "grade-none", fullName: "Не пройдено" };
+                const scoreText = result ? `${result.score}/${result.totalQuestions}` : "—";
+                const dateText = result ? new Date(result.completedAt).toLocaleString() : "—";
+                topicsHtml += `<tr><td style="text-align: left;"><strong>Тема ${i}</strong><br><span style="font-size: 0.7rem; color: #666;">${topicNames[i]}</span></td><td style="text-align: center;"><span class="grade-badge ${gradeInfo.color}">${gradeInfo.name}</span></td><td style="text-align: center;">${scoreText}</td><td style="text-align: center;">${dateText}</td></tr>`;
+            }
+            let totalScore = 0, totalPossible = 0;
+            results.forEach(r => { totalScore += r.score; totalPossible += r.totalQuestions; });
+            const percent = totalPossible > 0 ? Math.round(totalScore / totalPossible * 100) : 0;
+            document.getElementById('modalTitle').innerHTML = `📊 Статистика: ${cadet.name}`;
+            document.getElementById('modalBody').innerHTML = `
+                <div class="detail-info">
+                    <div><strong>🎓 ФИО:</strong> ${cadet.name}</div>
+                    <div><strong>📅 Дата рождения:</strong> ${cadet.birthdate}</div>
+                    <div><strong>🔑 Логин:</strong> ${cadet.login}</div>
+                    <div><strong>🟢 Статус:</strong> <span class="cadet-status ${active ? 'status-active' : 'status-inactive'}">${active ? 'Активен' : 'Не активен'}</span></div>
+                </div>
+                <div class="detail-info">
+                    <div><strong>📊 Всего пройдено:</strong> ${results.length} из 12 тем</div>
+                    <div><strong>🎯 Общий процент:</strong> ${percent}%</div>
+                    <div><strong>📅 Последний заход:</strong> ${cadet.lastLogin ? new Date(cadet.lastLogin).toLocaleString() : 'никогда'}</div>
+                </div>
+                <table class="detail-table"><thead><tr><th>Тема занятия</th><th>Оценка</th><th>Результат</th><th>Дата</th></tr></thead><tbody>${topicsHtml}</tbody></table>
+            `;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`tab${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+            if (tabId === 'topics') renderTopicsGrid();
+            else if (tabId === 'cadets') renderCadetsList();
+        }
+
+        function updateAllStats() {
+            const user = getCurrentUser();
+            if (!user || user.role !== 'commander') { window.location.href = 'login.html'; return; }
+            currentPlatoon = user.platoon;
+            allCadets = getCadetsByPlatoon(currentPlatoon);
+            document.getElementById('platoonNumber').textContent = currentPlatoon;
+            const photoUrl = getCommanderPhoto ? getCommanderPhoto(user.id) : null;
+            const userHeader = document.getElementById('userHeader');
+            if (userHeader) {
+                const avatarHtml = photoUrl ? `<img src="${photoUrl}" class="commander-avatar" alt="Фото">` : `<div class="commander-avatar-placeholder">👨‍✈️</div>`;
+                userHeader.innerHTML = `<div class="user-info-wrapper">${avatarHtml}<span class="user-name">${user.name} (командир)</span><a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a></div>`;
+            }
+            renderTopicsGrid();
+            renderCadetsList();
+        }
+
+        document.getElementById('searchCadet')?.addEventListener('input', () => renderCadetsList());
+        document.getElementById('filterStatus')?.addEventListener('change', () => renderCadetsList());
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+        document.addEventListener('click', (e) => { if (e.target === document.getElementById('detailModal')) closeModal(); });
+        document.addEventListener('DOMContentLoaded', updateAllStats);
+   // Функция обновления счетчика сообщений в меню
+// Обновление счетчика сообщений в меню
+function updateChatBadge() {
+    var user = getCurrentUser();
+    if (!user) return;
+    var unreadCount = getTotalUnreadCount ? getTotalUnreadCount(user.id) : 0;
+    var chatLink = document.querySelector('.commander-nav a[href="commander-chat.html"]');
+    if (chatLink) {
+        var oldBadge = chatLink.querySelector('.chat-badge');
+        if (oldBadge) oldBadge.remove();
+        if (unreadCount > 0) {
+            var badge = document.createElement('span');
+            badge.className = 'chat-badge';
+            badge.style.cssText = 'background: #c00; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; margin-left: 8px; font-weight: bold;';
+            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+            chatLink.appendChild(badge);
+        }
+    }
+}
+
+// Слушаем изменения в localStorage (синхронизация между вкладками)
+window.addEventListener('storage', function(e) {
+    if (e.key === 'chatMessagesUpdated' || e.key === 'chatMessages') {
+        updateChatBadge();
+    }
+});
+
+// Запускаем при загрузке
+updateChatBadge();
+
+// Дополнительное обновление каждые 5 секунд (на всякий случай)
+setInterval(updateChatBadge, 5000);
+   </script>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат | Командир | Росгвардия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f1e8; }
+        
+        .main-header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .site-logo {
+            width: 48px;
+            height: 48px;
+            background: #880000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .site-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #212121;
+        }
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: #212121;
+            font-family: 'Bitter', serif;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: color 0.3s;
+        }
+        .main-nav a:hover, .main-nav a.active {
+            color: #880000;
+            border-bottom: 3px solid #880000;
+        }
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .commander-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #c9a45a;
+        }
+        .commander-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #c9a45a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .user-name {
+            background: #f5efe6;
+            color: #3d2b1a;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .logout-link {
+            color: #880000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .commander-nav {
+            background: #f5efe6;
+            padding: 10px 24px;
+            border-bottom: 2px solid #c9a45a;
+            text-align: center;
+        }
+        .commander-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            font-family: 'Bitter', serif;
+            padding: 5px 10px;
+            border-radius: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        .commander-nav a:hover, .commander-nav a.active {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        .chat-badge {
+            background: #c00;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 11px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+        
+        .chat-container { max-width: 1200px; margin: 0 auto; padding: 2rem; display: flex; gap: 2rem; flex-wrap: wrap; }
+        .users-list { flex: 1; min-width: 280px; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 70vh; display: flex; flex-direction: column; }
+        .users-header { background: #3d2b1a; color: white; padding: 1rem; font-weight: 600; }
+        .users-scroll { flex: 1; overflow-y: auto; }
+        .user-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #e0d0c0; transition: background 0.2s; }
+        .user-item:hover { background: #f5efe6; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: #c9a45a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; overflow: hidden; }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-info-chat { flex: 1; }
+        .user-name-chat { font-weight: 600; }
+        .user-last-message { font-size: 0.7rem; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .unread-badge { background: #c00; color: white; border-radius: 50%; padding: 2px 8px; font-size: 0.7rem; margin-left: 8px; }
+        
+        .chat-area { flex: 2; min-width: 300px; background: white; border-radius: 1rem; display: flex; flex-direction: column; height: 70vh; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .chat-header { background: #3d2b1a; color: white; padding: 1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 10px; }
+        .message { max-width: 70%; padding: 8px 12px; border-radius: 1rem; word-wrap: break-word; }
+        .message-out { background: #c9a45a; color: #3d2b1a; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .message-in { background: #f5efe6; color: #333; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .message-info { font-size: 0.7rem; margin-top: 4px; color: #888; text-align: right; }
+        .chat-input { display: flex; padding: 1rem; border-top: 1px solid #e0d0c0; gap: 10px; }
+        .chat-input input { flex: 1; padding: 10px; border: 2px solid #e0d0c0; border-radius: 2rem; outline: none; }
+        .chat-input button { background: #c9a45a; color: #3d2b1a; border: none; padding: 10px 20px; border-radius: 2rem; cursor: pointer; font-weight: 600; }
+        .no-chat-selected { display: flex; align-items: center; justify-content: center; height: 100%; color: #888; }
+        
+        .simple-footer {
+            background: #212121;
+            padding: 2rem;
+            text-align: center;
+            color: #888;
+            margin-top: 2rem;
+        }
+        .simple-footer-links a {
+            color: #888;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 10px; }
+            .main-nav ul { flex-direction: column; text-align: center; gap: 10px; }
+            .mobile-menu-toggle { display: block; }
+            .main-nav { display: none; }
+            .main-nav.show { display: block; }
+            .commander-nav a { display: inline-block; margin: 5px 10px; }
+            .chat-container { flex-direction: column; padding: 1rem; }
+            .users-list, .chat-area { height: 50vh; }
+            .message { max-width: 85%; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+<header class="main-header">
+    <div class="header-container">
+        <div class="logo-area">
+            <div class="site-logo">⚜️</div>
+            <span class="site-title">Росгвардия - мои горизонты</span>
+        </div>
+        <nav class="main-nav" id="mainNav">
+            <ul>
+                <li><a href="index.html">Единая модель профориентации</a></li>
+                <li><a href="institutes.html">Институты ВНГ РФ</a></li>
+                <li><a href="about.html">О проекте</a></li>
+            </ul>
+        </nav>
+        <div class="user-header" id="userHeader"></div>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+</header>
+
+<div class="commander-nav">
+    <a href="commander-platoon.html">👥 Мой взвод</a>
+    <a href="commander-stats.html">📊 Статистика</a>
+    
+    <a href="commander-chat.html" class="active">💬 Чат</a>
+</div>
+
+<div class="chat-container">
+    <div class="users-list">
+        <div class="users-header">👥 Кадеты взвода</div>
+        <div class="users-scroll" id="usersList">
+            <div style="padding: 1rem; text-align: center;">Загрузка...</div>
+        </div>
+    </div>
+    
+    <div class="chat-area" id="chatArea">
+        <div class="chat-header" id="chatHeader">
+            <div class="user-avatar" id="chatAvatar">👨‍✈️</div>
+            <div id="chatUserName">Выберите кадета</div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="no-chat-selected">👈 Выберите кадета из списка</div>
+        </div>
+        <div class="chat-input" id="chatInput" style="display: none;">
+            <input type="text" id="messageInput" placeholder="Введите сообщение..." onkeypress="if(event.key==='Enter') sendMessage()">
+            <button onclick="sendMessage()">📨 Отправить</button>
+        </div>
+    </div>
+</div>
+
+<footer class="simple-footer">
+    <div class="simple-footer-links">
+        <a href="index.html">Главная</a>
+        <a href="institutes.html">Институты ВНГ РФ</a>
+        <a href="about.html">О проекте</a>
+    </div>
+    <p style="margin-top: 1rem;">© 2026 Росгвардия. Все права защищены.</p>
+</footer>
+
+<script src="app.js"></script>
+<script>
+    var currentUser = null;
+    var allCadets = [];
+    var currentRecipient = null;
+    
+    function toggleMobileMenu() {
+        var nav = document.getElementById('mainNav');
+        if (nav) nav.classList.toggle('show');
+    }
+    
+    function logout() {
+        sessionStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+    }
+    
+    // Функция обновления счетчика сообщений в меню
+    function updateChatBadge() {
+        if (!currentUser) return;
+        var unreadCount = getTotalUnreadCount(currentUser.id);
+        var chatLink = document.querySelector('.commander-nav a[href="commander-chat.html"]');
+        if (chatLink) {
+            var oldBadge = chatLink.querySelector('.chat-badge');
+            if (oldBadge) oldBadge.remove();
+            if (unreadCount > 0) {
+                var badge = document.createElement('span');
+                badge.className = 'chat-badge';
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                chatLink.appendChild(badge);
+            }
+        }
+    }
+    
+    function loadUsers() {
+        var cadetsRaw = JSON.parse(localStorage.getItem('cadets') || '[]');
+        allCadets = [];
+        for (var i = 0; i < cadetsRaw.length; i++) {
+            if (cadetsRaw[i].platoon === currentUser.platoon) {
+                allCadets.push(cadetsRaw[i]);
+            }
+        }
+        
+        var dialogs = getDialogs(currentUser.id);
+        var usersWithLastMsg = {};
+        for (var i = 0; i < dialogs.length; i++) {
+            usersWithLastMsg[dialogs[i].userId] = dialogs[i];
+        }
+        
+        var container = document.getElementById('usersList');
+        if (allCadets.length === 0) {
+            container.innerHTML = '<div style="padding: 1rem; text-align: center;">Нет кадетов во взводе</div>';
+            return;
+        }
+        
+        var html = '';
+        for (var i = 0; i < allCadets.length; i++) {
+            var c = allCadets[i];
+            var lastMsg = usersWithLastMsg[c.id];
+            var lastMsgText = lastMsg ? (lastMsg.lastMessage.message.substring(0, 30) + (lastMsg.lastMessage.message.length > 30 ? '...' : '')) : 'Нет сообщений';
+            var unreadCount = lastMsg ? lastMsg.unreadCount : 0;
+            var unreadHtml = unreadCount > 0 ? '<span class="unread-badge">' + unreadCount + '</span>' : '';
+            
+            var photoUrl = typeof getCadetPhoto === 'function' ? getCadetPhoto(c.id) : null;
+            var avatarHtml = photoUrl ? '<img src="' + photoUrl + '" style="width:45px;height:45px;border-radius:50%;object-fit:cover;">' : '<span style="font-size:1.3rem;">🎓</span>';
+            
+            html += '<div class="user-item" onclick="selectCadet(' + c.id + ', \'' + c.name.replace(/'/g, "\\'") + '\')">';
+            html += '<div class="user-avatar">' + avatarHtml + '</div>';
+            html += '<div class="user-info-chat">';
+            html += '<div class="user-name-chat">' + c.name + unreadHtml + '</div>';
+            html += '<div class="user-last-message">' + lastMsgText + '</div>';
+            html += '</div></div>';
+        }
+        container.innerHTML = html;
+        updateChatBadge();
+    }
+    
+    function selectCadet(cadetId, cadetName) {
+        currentRecipient = { id: cadetId, name: cadetName, role: 'cadet' };
+        
+        markMessagesAsRead(cadetId, currentUser.id);
+        
+        document.getElementById('chatUserName').innerHTML = cadetName;
+        document.getElementById('chatInput').style.display = 'flex';
+        
+        loadMessages();
+        loadUsers();
+        updateChatBadge(); // Мгновенное обновление после отметки прочитанных
+    }
+    
+    function loadMessages() {
+        if (!currentRecipient) return;
+        
+        var messages = getDialog(currentUser.id, currentRecipient.id);
+        var container = document.getElementById('chatMessages');
+        
+        if (messages.length === 0) {
+            container.innerHTML = '<div class="no-chat-selected">💬 Напишите сообщение</div>';
+            return;
+        }
+        
+        var html = '';
+        for (var i = 0; i < messages.length; i++) {
+            var m = messages[i];
+            var isOutgoing = m.fromId === currentUser.id;
+            var messageClass = isOutgoing ? 'message-out' : 'message-in';
+            var senderName = isOutgoing ? 'Вы' : m.fromName;
+            
+            html += '<div class="message ' + messageClass + '">';
+            html += '<div>' + m.message.replace(/\n/g, '<br>') + '</div>';
+            html += '<div class="message-info">' + senderName + ', ' + new Date(m.createdAt).toLocaleString() + '</div>';
+            html += '</div>';
+        }
+        
+        container.innerHTML = html;
+        container.scrollTop = container.scrollHeight;
+    }
+    
+    function sendMessage() {
+        var input = document.getElementById('messageInput');
+        var message = input.value.trim();
+        
+        if (!message) return;
+        if (!currentRecipient) {
+            alert('Выберите кадета');
+            return;
+        }
+        
+        sendChatMessage(
+            currentUser.id,
+            currentUser.name,
+            currentUser.role,
+            currentRecipient.id,
+            currentRecipient.name,
+            currentRecipient.role,
+            message
+        );
+        
+        input.value = '';
+        loadMessages();
+        loadUsers();
+        updateChatBadge(); // Мгновенное обновление после отправки
+    }
+    
+    function loadUserData() {
+        currentUser = getCurrentUser();
+        if (!currentUser || currentUser.role !== 'commander') {
+            window.location.href = 'index.html';
+            return;
+        }
+        
+        var photoUrl = typeof getCommanderPhoto === 'function' ? getCommanderPhoto(currentUser.id) : null;
+        var userHeader = document.getElementById('userHeader');
+        if (userHeader) {
+            var avatarHtml = photoUrl ? 
+                '<img src="' + photoUrl + '" class="commander-avatar" alt="Фото">' : 
+                '<div class="commander-avatar-placeholder">👨‍✈️</div>';
+            userHeader.innerHTML = '<div class="user-info-wrapper">' + avatarHtml + '<span class="user-name">' + currentUser.name + ' (командир)</span><a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a></div>';
+        }
+        
+        loadUsers();
+        
+        // Проверка новых сообщений каждые 2 секунды (для получения сообщений от других)
+        setInterval(function() {
+            if (currentRecipient) {
+                loadMessages();
+            }
+            loadUsers();
+        }, 2000);
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadUserData);
+</script>
+</body>
+</html>

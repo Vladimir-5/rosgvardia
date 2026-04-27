@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Курс занятий | Кадет | Росгвардия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f1e8; }
+        
+        .cadet-header {
+            background: linear-gradient(145deg, #1a2e3f, #2b4a5c);
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .cadet-header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; }
+        
+        /* Стили для блока пользователя (как у командира) */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #c9a45a;
+            padding: 5px 15px;
+            border-radius: 30px;
+        }
+        .cadet-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+        }
+        .cadet-avatar-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .user-name-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a2e3f;
+        }
+        .logout-btn {
+            background: #c9a45a;
+            color: #1a2e3f;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .logout-btn:hover {
+            background: #b8944a;
+        }
+        
+        .cadet-nav {
+            background: white;
+            padding: 0.8rem 2rem;
+            border-bottom: 2px solid #c9a45a;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .cadet-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            transition: all 0.3s;
+        }
+        .cadet-nav a:hover, .cadet-nav a.active {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .page-header { text-align: center; margin-bottom: 2rem; }
+        .page-header h2 { font-size: 2rem; color: #3d2b1a; font-family: 'Montserrat', sans-serif; }
+        .page-header p { color: #666; margin-top: 0.5rem; }
+        
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .lesson-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border: 1px solid #e0d0c0;
+        }
+        .lesson-card:hover { transform: translateY(-5px); }
+        .lesson-card-header {
+            background: #3d2b1a;
+            color: #f5e7d9;
+            padding: 1rem;
+            text-align: center;
+        }
+        .lesson-card-header h3 { margin: 0; font-size: 1.1rem; }
+        .lesson-card-body { padding: 1rem; }
+        .lesson-card-body p { color: #666; margin-bottom: 1rem; }
+        .lesson-btn {
+            display: inline-block;
+            background: #c9a45a;
+            color: #3d2b1a;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .status-badge {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 2rem;
+            background: #4caf50;
+            color: white;
+        }
+        
+        .simple-footer {
+            background: #212121;
+            padding: 1.5rem;
+            text-align: center;
+            color: #888;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .cadet-header { flex-direction: column; gap: 0.5rem; text-align: center; }
+            .cadet-nav { justify-content: center; }
+            .container { padding: 1rem; }
+            .lessons-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+    <div class="cadet-header">
+        <h1>⚜️ Росгвардия — мои горизонты</h1>
+        <div class="user-section">
+            <div class="user-info-wrapper" id="userInfoWrapper"></div>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
+        </div>
+    </div>
+    
+    <div class="cadet-nav">
+        <a href="cadet-courses.html" class="active">📚 Курс занятий</a>
+        <a href="cadet-institutes.html">🏛️ Институты ВНГ РФ</a>
+        <a href="cadet-grades.html" class="active">📊 Мои оценки</a>
+         <a href="cadet-chat.html">💬 Чат</a>
+    </div>
+    
+    <div class="container">
+        <div class="page-header">
+            <h2>📚 Курс занятий</h2>
+            <p>Изучайте материал и проходите тесты по каждой теме</p>
+        </div>
+        
+        <div class="lessons-grid" id="lessonsGrid"></div>
+    </div>
+    
+    <footer class="simple-footer">
+        <p>© 2026 Росгвардия. Все права защищены.</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        const lessons = [
+            { id: 1, title: "Росгвардия — сила и безопасность России", video: "https://vk.com/video_ext.php?oid=-227177527&id=456239258&hash=e7f392b48677ec70" },
+            { id: 2, title: "Непобеждённый: подвиг Героя России А.А. Романова", video: "https://rutube.ru/play/embed/956550a6c60760be2b627601982e3a2c/" },
+            { id: 3, title: "Инженерные войска: Умная сила армии", video: "https://vk.com/video_ext.php?oid=-200002032&id=456239063&hash=84fb364cd690eaf6" },
+            { id: 4, title: "Атомная отрасль России: технологический щит", video: "https://vk.com/video_ext.php?oid=-135454514&id=456249759&hash=25d3377aad7c4af6" },
+            { id: 5, title: "Космическая отрасль России: орбиты технологий", video: "https://vk.com/video_ext.php?oid=-227177527&id=456239228&hash=01e23646ab759282" },
+            { id: 6, title: "Россия аграрная: продовольственная безопасность", video: "https://vk.com/video_ext.php?oid=-135454514&id=456249868&hash=7d334feba90c032f" },
+            { id: 7, title: "Энергетика — основа жизни страны", video: "https://vk.com/video_ext.php?oid=-227177527&id=456239258&hash=e7f392b48677ec70" },
+            { id: 8, title: "Граф Комаровский: основатель внутренней стражи", video: "https://rutube.ru/play/embed/956550a6c60760be2b627601982e3a2c/" },
+            { id: 9, title: "Оборонная промышленность: машиностроение", video: "https://vk.com/video_ext.php?oid=-135454514&id=456250261&hash=12fc306dad4ebc78" },
+            { id: 10, title: "Настоящий кадет: Честь и мужество", video: "https://ok.ru/videoembed/4814578125483" },
+            { id: 11, title: "Космическая отрасль: инженер-испытатель", video: "https://vk.com/video_ext.php?oid=-193554174&id=456239913&hash=2345e58700503c06" },
+            { id: 12, title: "Кинологическая служба ВНГ: верность длиною в жизнь", video: "https://rutube.ru/play/embed/4e0ce03824a61a4507d46e710d223283/" }
+        ];
+        
+        function getCompletedTopics() {
+            const user = getCurrentUser();
+            if (!user) return [];
+            const results = JSON.parse(localStorage.getItem('testResults') || '[]');
+            return results.filter(r => r.cadetId === user.id).map(r => r.topicId);
+        }
+        
+        function renderLessons() {
+            const completed = getCompletedTopics();
+            const grid = document.getElementById('lessonsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = lessons.map(lesson => `
+                <div class="lesson-card">
+                    <div class="lesson-card-header">
+                        <h3>Тема ${lesson.id}</h3>
+                    </div>
+                    <div class="lesson-card-body">
+                        <p>${lesson.title}</p>
+                        <a href="cadet-topic.html?id=${lesson.id}" class="lesson-btn">Перейти к занятию →</a>
+                        ${completed.includes(lesson.id) ? '<span class="status-badge">✅ Пройдено</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+        
+        (function() {
+            const user = getCurrentUser();
+            if (!user || user.role !== 'cadet') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Получаем фото кадета
+            const cadetPhotoUrl = typeof getCadetPhoto === 'function' ? getCadetPhoto(user.id) : null;
+            
+            // Аватар
+            let avatarHtml = '';
+            if (cadetPhotoUrl) {
+                avatarHtml = `<img src="${cadetPhotoUrl}" class="cadet-avatar" alt="Фото">`;
+            } else {
+                avatarHtml = `<div class="cadet-avatar-placeholder">🎓</div>`;
+            }
+            
+            // Вставляем в жёлтую обёртку
+            document.getElementById('userInfoWrapper').innerHTML = `
+                ${avatarHtml}
+                <span class="user-name-text">${user.name} (взвод №${user.platoon})</span>
+            `;
+            
+            renderLessons();
+        })();
+        // ========== СЧЕТЧИК СООБЩЕНИЙ ДЛЯ КАДЕТА ==========
+function updateChatBadge() {
+    var user = getCurrentUser();
+    if (!user || user.role !== 'cadet') return;
+    
+    var unreadCount = typeof getTotalUnreadCount === 'function' ? getTotalUnreadCount(user.id) : 0;
+    var cadetNav = document.querySelector('.cadet-nav');
+    
+    if (cadetNav) {
+        var chatLink = cadetNav.querySelector('a[href="cadet-chat.html"]');
+        if (chatLink) {
+            var oldBadge = chatLink.querySelector('.chat-badge');
+            if (oldBadge) oldBadge.remove();
+            if (unreadCount > 0) {
+                var badge = document.createElement('span');
+                badge.className = 'chat-badge';
+                badge.style.cssText = 'background: #c00; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; margin-left: 8px; font-weight: bold; display: inline-block; min-width: 18px; text-align: center;';
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                chatLink.appendChild(badge);
+            }
+        }
+    }
+}
+
+// Слушаем изменения в localStorage (мгновенно между вкладками)
+window.addEventListener('storage', function(e) {
+    if (e.key === 'chatMessagesUpdated' || e.key === 'chatMessages') {
+        updateChatBadge();
+    }
+});
+
+// Запускаем
+updateChatBadge();
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему | Росгвардия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a2e3f 0%, #0d1a24 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .login-header {
+            background: #880000;
+            padding: 30px;
+            text-align: center;
+        }
+        .login-header h1 { color: white; font-family: 'Montserrat', sans-serif; font-size: 24px; }
+        .login-header p { color: #ffcc99; margin-top: 5px; }
+        .login-body { padding: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #880000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-login:hover { background: #660000; }
+        .register-link { text-align: center; margin-top: 15px; }
+        .register-link a { color: #880000; text-decoration: none; }
+        .error-message { background: #fee; color: #c00; padding: 10px; border-radius: 10px; margin-bottom: 20px; display: none; text-align: center; }
+        .role-badge { text-align: center; margin-top: 20px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 20px; }
+        .role-badge strong { color: #5e3e2b; }
+        .quick-login {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .quick-btn {
+            background: #f5efe6;
+            border: 1px solid #c9a45a;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .quick-btn:hover {
+            background: #c9a45a;
+            color: white;
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>⚜️ Росгвардия</h1>
+            <p>Мои горизонты — Вход в систему</p>
+        </div>
+        <div class="login-body">
+            <div class="error-message" id="errorMessage"></div>
+            
+            <div class="quick-login">
+                <button class="quick-btn" data-login="admin" data-pass="admin123">👑 Администратор</button>
+                <button class="quick-btn" data-login="commander1" data-pass="pass123">👨‍✈️ Командир взвода</button>
+            </div>
+            
+            <div class="form-group">
+                <label>Логин</label>
+                <input type="text" id="loginInput" placeholder="Введите логин" value="admin">
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" id="passwordInput" placeholder="Введите пароль" value="admin123">
+            </div>
+            <button class="btn-login" id="loginBtn">Войти</button>
+            <div class="register-link">
+                <a href="#" id="showRegisterBtn">📝 Зарегистрироваться как кадет</a>
+            </div>
+            <div class="role-badge">
+                <strong>Тестовые учётные записи:</strong><br>
+                👑 Администратор: admin / admin123<br>
+                👨‍✈️ Командир взвода: commander1 / pass123
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно регистрации кадета -->
+    <div id="registerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 20px; max-width: 400px; width: 90%; padding: 30px;">
+            <h2 style="margin-bottom: 20px; color: #880000;">📝 Регистрация кадета</h2>
+            <input type="text" id="regName" placeholder="ФИО" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px;">
+            <input type="number" id="regPlatoon" placeholder="Номер взвода (1-20)" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px;">
+            <input type="date" id="regBirthdate" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px;">
+            <input type="text" id="regLogin" placeholder="Логин" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px;">
+            <input type="password" id="regPassword" placeholder="Пароль" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 10px;">
+            <div id="regError" style="color: red; margin-bottom: 15px; display: none;"></div>
+            <button id="registerBtn" style="width: 100%; padding: 12px; background: #880000; color: white; border: none; border-radius: 10px; cursor: pointer;">Зарегистрироваться</button>
+            <button id="closeRegisterBtn" style="width: 100%; margin-top: 10px; padding: 10px; background: #ccc; border: none; border-radius: 10px; cursor: pointer;">Отмена</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const existingUser = getCurrentUser();
+            if (existingUser) {
+                if (existingUser.role === 'admin') {
+                    window.location.href = 'admin-panel.html';
+                } else if (existingUser.role === 'commander') {
+                    window.location.href = 'index.html';
+                } else if (existingUser.role === 'cadet') {
+                    window.location.href = 'cadet-courses.html';
+                }
+                return;
+            }
+            
+            const modal = document.getElementById('registerModal');
+            const loginInput = document.getElementById('loginInput');
+            const passwordInput = document.getElementById('passwordInput');
+            
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    loginInput.value = btn.getAttribute('data-login');
+                    passwordInput.value = btn.getAttribute('data-pass');
+                });
+            });
+            
+            document.getElementById('showRegisterBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.style.display = 'flex';
+            });
+            
+            document.getElementById('closeRegisterBtn').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            document.getElementById('registerBtn').addEventListener('click', () => {
+                const result = registerCadet(
+                    document.getElementById('regName').value,
+                    document.getElementById('regPlatoon').value,
+                    document.getElementById('regBirthdate').value,
+                    document.getElementById('regLogin').value,
+                    document.getElementById('regPassword').value
+                );
+                if (result.success) {
+                    alert('Регистрация успешна! Теперь вы можете войти.');
+                    modal.style.display = 'none';
+                    document.getElementById('regError').style.display = 'none';
+                } else {
+                    document.getElementById('regError').textContent = result.message;
+                    document.getElementById('regError').style.display = 'block';
+                }
+            });
+            
+            document.getElementById('loginBtn').addEventListener('click', () => {
+                const user = login(loginInput.value, passwordInput.value);
+                if (user) {
+                    if (user.role === 'admin') {
+                        window.location.href = 'admin-panel.html';
+                    } else if (user.role === 'commander') {
+                        window.location.href = 'index.html';
+                    } else if (user.role === 'cadet') {
+                        window.location.href = 'cadet-courses.html';
+                    }
+                } else {
+                    document.getElementById('errorMessage').textContent = 'Неверный логин или пароль';
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            });
+            
+            document.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') document.getElementById('loginBtn').click();
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

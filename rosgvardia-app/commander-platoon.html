@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Мой взвод | Командир | Росгвардия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f1e8; }
+        
+        .main-header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .site-logo {
+            width: 48px;
+            height: 48px;
+            background: #880000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .site-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #212121;
+        }
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: #212121;
+            font-family: 'Bitter', serif;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: color 0.3s;
+        }
+        .main-nav a:hover, .main-nav a.active {
+            color: #880000;
+            border-bottom: 3px solid #880000;
+        }
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .commander-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #c9a45a;
+        }
+        .commander-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #c9a45a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .user-name {
+            background: #f5efe6;
+            color: #3d2b1a;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .logout-link {
+            color: #880000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Меню командира — только Мой взвод и Статистика */
+        .commander-nav {
+            background: #f5efe6;
+            padding: 10px 24px;
+            border-bottom: 2px solid #c9a45a;
+            text-align: center;
+        }
+        .commander-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            font-family: 'Bitter', serif;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .commander-nav a:hover, .commander-nav a.active {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 24px; }
+        .page-header { margin-bottom: 2rem; }
+        .page-header h1 { font-size: 1.8rem; color: #3d2b1a; border-bottom: 3px solid #c9a45a; display: inline-block; padding-bottom: 0.5rem; }
+        
+        .cadets-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .cadets-table th, .cadets-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0d0c0;
+        }
+        .cadets-table th {
+            background: #3d2b1a;
+            color: #f5e7d9;
+            font-weight: 600;
+        }
+        .cadets-table tr:hover { background: #f5efe6; }
+        .status-active { color: #4caf50; font-weight: 600; }
+        .status-inactive { color: #999; }
+        
+        .simple-footer {
+            background: #212121;
+            padding: 2rem;
+            text-align: center;
+            color: #888;
+            margin-top: 2rem;
+        }
+        .simple-footer-links { margin-top: 1rem; }
+        .simple-footer-links a { color: #888; text-decoration: none; margin: 0 15px; font-size: 14px; }
+        
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 10px; }
+            .main-nav ul { flex-direction: column; text-align: center; gap: 10px; }
+            .mobile-menu-toggle { display: block; }
+            .main-nav { display: none; }
+            .main-nav.show { display: block; }
+            .commander-nav a { display: inline-block; margin: 5px 10px; }
+            .cadets-table { font-size: 12px; }
+            .cadets-table th, .cadets-table td { padding: 8px; }
+            .container { padding: 1rem; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="site-logo">⚜️</div>
+                <span class="site-title">Росгвардия - мои горизонты</span>
+            </div>
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="index.html">Единая модель профориентации</a></li>
+                    <li><a href="institutes.html">Институты ВНГ РФ</a></li>
+                    <li><a href="about.html">О проекте</a></li>
+                </ul>
+            </nav>
+            <div class="user-header" id="userHeader"></div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+        
+    </header>
+
+    <!-- Меню командира — только Мой взвод и Статистика (без Курса занятий) -->
+    <div class="commander-nav">
+        <a href="commander-platoon.html" class="active">👥 Мой взвод</a>
+        <a href="commander-stats.html">📊 Статистика</a>
+        
+         <a href="commander-chat.html">💬 Чат</a>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>👥 Список кадетов взвода №<span id="platoonNumber"></span></h1>
+        </div>
+        <div style="overflow-x: auto;">
+            <table class="cadets-table">
+                <thead>
+                    <tr>
+                        <th>ФИО</th>
+                        <th>Взвод</th>
+                        <th>Дата рождения</th>
+                        <th>Последний заход</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody id="cadetsTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="simple-footer">
+        <div class="simple-footer-links">
+            <a href="index.html">Главная</a>
+            <a href="institutes.html">Институты ВНГ РФ</a>
+            <a href="about.html">О проекте</a>
+        </div>
+        <p style="margin-top: 1rem;">© 2026 Росгвардия. Все права защищены.</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('show');
+        }
+
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        function getCadetsByPlatoon(platoon) {
+            const cadets = JSON.parse(localStorage.getItem('cadets') || '[]');
+            return cadets.filter(c => c.platoon === platoon);
+        }
+
+        function isCadetActive(cadet) {
+            if (!cadet.lastLogin) return false;
+            const lastLogin = new Date(cadet.lastLogin);
+            const now = new Date();
+            const diffMinutes = (now - lastLogin) / (1000 * 60);
+            return diffMinutes < 1;
+        }
+
+        function renderPlatoonList() {
+    const user = getCurrentUser();
+    if (!user || user.role !== 'commander') {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    const platoon = user.platoon;
+    const cadets = getCadetsByPlatoon(platoon);
+    const tbody = document.getElementById('cadetsTableBody');
+    document.getElementById('platoonNumber').textContent = platoon;
+    
+    // Отображаем фото командира в хедере
+    const commanderPhotoUrl = getCommanderPhoto ? getCommanderPhoto(user.id) : null;
+    const userHeader = document.getElementById('userHeader');
+    if (userHeader) {
+        const avatarHtml = commanderPhotoUrl ? 
+            `<img src="${commanderPhotoUrl}" class="commander-avatar" alt="Фото">` : 
+            `<div class="commander-avatar-placeholder">👨‍✈️</div>`;
+        userHeader.innerHTML = `
+            <div class="user-info-wrapper">
+                ${avatarHtml}
+                <span class="user-name">${user.name} (командир)</span>
+                <a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a>
+            </div>
+        `;
+    }
+    
+    if (cadets.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Нет кадетов во взводе</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = cadets.map(c => {
+        const active = isCadetActive(c);
+        const cadetPhotoUrl = typeof getCadetPhoto === 'function' ? getCadetPhoto(c.id) : null;
+        const photoHtml = cadetPhotoUrl ? 
+            `<img src="${cadetPhotoUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #c9a45a;">` : 
+            `<div style="width: 40px; height: 40px; background: #c9a45a; border-radius: 50%; display: flex; align-items: center; justify-content: center;">🎓</div>`;
+        return `
+            <tr>
+                <td style="display: flex; align-items: center; gap: 10px;">
+                    ${photoHtml}
+                    ${c.name}
+                </td>
+                <td>${c.platoon}</td>
+                <td>${c.birthdate}</td>
+                <td>${c.lastLogin ? new Date(c.lastLogin).toLocaleString() : 'никогда'}</td>
+                <td class="${active ? 'status-active' : 'status-inactive'}">${active ? '🟢 Активен' : '⚫ Не активен'}</td>
+            </tr>
+        `;
+    }).join('');
+}
+        
+        document.addEventListener('DOMContentLoaded', renderPlatoonList);
+    // Функция обновления счетчика сообщений в меню
+// Обновление счетчика сообщений в меню
+function updateChatBadge() {
+    var user = getCurrentUser();
+    if (!user) return;
+    var unreadCount = getTotalUnreadCount ? getTotalUnreadCount(user.id) : 0;
+    var chatLink = document.querySelector('.commander-nav a[href="commander-chat.html"]');
+    if (chatLink) {
+        var oldBadge = chatLink.querySelector('.chat-badge');
+        if (oldBadge) oldBadge.remove();
+        if (unreadCount > 0) {
+            var badge = document.createElement('span');
+            badge.className = 'chat-badge';
+            badge.style.cssText = 'background: #c00; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; margin-left: 8px; font-weight: bold;';
+            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+            chatLink.appendChild(badge);
+        }
+    }
+}
+
+// Слушаем изменения в localStorage (синхронизация между вкладками)
+window.addEventListener('storage', function(e) {
+    if (e.key === 'chatMessagesUpdated' || e.key === 'chatMessages') {
+        updateChatBadge();
+    }
+});
+
+// Запускаем при загрузке
+updateChatBadge();
+
+// Дополнительное обновление каждые 5 секунд (на всякий случай)
+setInterval(updateChatBadge, 5000);
+    </script>
+    
+</body>
+</html>

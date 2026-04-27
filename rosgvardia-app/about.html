@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Росгвардия - мои горизонты | О проекте</title>
+    <!-- Подключаем шрифты -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <img src="assets/logo.png" alt="Логотип" class="site-logo">
+                <span class="site-title">Росгвардия - мои горизонты</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Единая модель профориентации</a></li>
+                    <li><a href="institutes.html">Институты ВНГ РФ</a></li>
+                    <li><a href="about.html" class="active">О проекте</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header" style="background: linear-gradient(135deg, #880000 0%, #440000 100%);">
+            <div class="container">
+                <h1 class="page-title" style="color: white;">О проекте</h1>
+                <p class="page-description" style="color: rgba(255,255,255,0.9);">Единая модель профориентации "Росгвардия - мои горизонты"</p>
+            </div>
+        </section>
+
+        <section class="about-project-section">
+            <div class="container">
+                <div class="project-content">
+                    <h2 class="section-title">Цель проекта</h2>
+                    <p>Формирование у обучающихся 7 классов готовности к профессиональному самоопределению, ознакомление их с миром профессий, федеральным и региональным рынками труда, а также профессиональными требованияями к будущим сотрудникам Росгвардии.</p>
+                    
+                    <h2 class="section-title">Задачи проекта</h2>
+                    <ul class="project-tasks">
+                        <li>Проведение профориентационных уроков и занятий</li>
+                        <li>Организация диагностики профессиональных склонностей</li>
+                        <li>Проведение практико-ориентированных занятий</li>
+                        <li>Встречи с представителями различных профессий</li>
+                        <li>Экскурсии на предприятия и в образовательные учреждения</li>
+                        <li>Индивидуальные консультации по профориентации</li>
+                    </ul>
+
+                    <h2 class="section-title">Для кого этот проект</h2>
+                    <p>Проект предназначен для обучающихся 7 классов общеобразовательных учреждений, проявляющих интерес к службе в Росгвардии и других силовых структурах.</p>
+
+                    <h2 class="section-title">Результаты участия</h2>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-icon">🎯</div>
+                            <h3>Осознанный выбор</h3>
+                            <p>Поможем определиться с будущей профессией</p>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">📚</div>
+                            <h3>Знания о профессиях</h3>
+                            <p>Узнаете о различных специальностях в Росгвардии</p>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">🤝</div>
+                            <h3>Практический опыт</h3>
+                            <p>Получите возможность участвовать в практических занятиях</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo.png" alt="Логотип" style="width: 60px;">
+                    <p>Росгвардия - мои горизонты</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Главная</a>
+                    <a href="institutes.html">Институты ВНГ РФ</a>
+                    <a href="about.html">О проекте</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Росгвардия. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="fab-container">
+        <button class="fab-button" id="fabButton" aria-label="Действия">⚙️</button>
+        <div class="fab-menu" id="fabMenu">
+            <a href="#">Сайты Google</a>
+            <a href="#">Сообщить о нарушении</a>
+            <a href="#">Сведения о странице</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Росгвардия - мои горизонты | Главная</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные стили */
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-badge {
+            background: #f5efe6;
+            color: #3d2b1a;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .logout-link {
+            color: #880000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link {
+            background: #880000;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link:hover {
+            background: #660000;
+        }
+        
+        /* Аватар командира */
+        .commander-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #c9a45a;
+        }
+        .commander-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #c9a45a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 2px solid #fff;
+        }
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Меню командира */
+        .commander-nav {
+            background: #f5efe6;
+            padding: 10px 24px;
+            border-bottom: 2px solid #c9a45a;
+            text-align: center;
+            display: none;
+        }
+        .commander-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            font-family: 'Bitter', serif;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .commander-nav a:hover {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        /* Меню кадета */
+        .cadet-nav {
+            background: #f5efe6;
+            padding: 10px 24px;
+            border-bottom: 2px solid #c9a45a;
+            text-align: center;
+            display: none;
+        }
+        .cadet-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            font-family: 'Bitter', serif;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .cadet-nav a:hover {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        /* Hero-секция */
+        .hero-section {
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://rosguard.gov.ru/images/header-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(136,0,0,0.7) 0%, rgba(68,0,0,0.8) 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: none;
+            border: none;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            z-index: 1;
+            animation: bounce 2s infinite;
+            opacity: 0.8;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .hero-section { min-height: 400px; }
+            .commander-nav a { display: inline-block; margin: 5px 10px; }
+            .cadet-nav a { display: inline-block; margin: 5px 10px; }
+            .user-header { flex-direction: column; gap: 10px; }
+            .user-info-wrapper { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <img src="assets/logo.png" alt="Логотип" class="site-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="site-logo" style="display: none; background: #880000; border-radius: 50%; width: 48px; height: 48px; align-items: center; justify-content: center; color: white; font-weight: bold;">⚜️</span>
+                <span class="site-title">Росгвардия - мои горизонты</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active">Единая модель профориентации</a></li>
+                    <li><a href="institutes.html">Институты ВНГ РФ</a></li>
+                    <li><a href="about.html">О проекте</a></li>
+                </ul>
+            </nav>
+            <div class="user-header" id="userHeader"></div>
+            <button class="mobile-menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <!-- Дополнительная навигация для командира -->
+    <div class="commander-nav" id="commanderNav">
+        <a href="commander-platoon.html">👥 Мой взвод</a>
+        <a href="commander-stats.html">📊 Статистика</a>
+        
+        <a href="commander-chat.html">💬 Чат</a>
+    </div>
+
+    <!-- Дополнительная навигация для кадета -->
+    <div class="cadet-nav" id="cadetNav">
+        <a href="cadet-courses.html">📚 Мои занятия</a>
+    </div>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-bg"></div>
+            <div class="hero-content container">
+                <h1 class="hero-title">
+                    <span style="color: #ffffff;">Добро пожаловать</span><br>
+                    <span style="color: #ffcc99;">в Росгвардия - мои горизонты</span>
+                </h1>
+                <p class="hero-subtitle">Вы сможете собрать занятия и план по организации и проведению профориентационной работы</p>
+            </div>
+            <button class="scroll-down" aria-label="Прокрутить вниз">⌄</button>
+        </section>
+
+        <section class="course-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Курс занятий "Росгвардия - мои горизонты"</h2>
+                    <p class="section-subtitle">Материалы для внеурочной деятельности</p>
+                    <a href="course.html" class="btn btn-outline">Посмотреть все занятия →</a>
+                </div>
+
+                <div class="lessons-cards-grid" id="lessons-cards-container"></div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <div class="container about-container">
+                <div class="about-text">
+                    <h2 class="section-title" style="text-align: left;">О курсе</h2>
+                    <p class="about-description">
+                        Курс профориентационных занятий «Росгвардия — мои горизонты» проводится для всех обучающихся 7 классов. 
+                        Он нацелен на формирование у кадет готовности к профессиональному самоопределению, ознакомление их с миром профессий, 
+                        федеральным и региональным рынками труда.
+                    </p>
+                    <p class="about-description">
+                        В рамках таких занятий проходят профориентационные уроки, диагностики, практико-ориентированные занятия и др.
+                    </p>
+                    <a href="about.html" class="btn btn-primary">О проекте →</a>
+                </div>
+                <div class="about-carousel">
+                    <div class="carousel-placeholder">
+                        <div class="carousel-image"></div>
+                        <div class="carousel-controls">
+                            <button class="carousel-prev">‹</button>
+                            <button class="carousel-next">›</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="simple-footer">
+        <div class="container">
+            <div class="simple-footer-content">
+                <div class="simple-footer-copyright">
+                    <p>© 2026 Росгвардия. Все права защищены.</p>
+                </div>
+                <div class="simple-footer-links">
+                    <a href="index.html">Главная</a>
+                    <a href="institutes.html">Институты ВНГ РФ</a>
+                    <a href="about.html">О проекте</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="fab-container">
+        <button class="fab-button" id="fabButton" aria-label="Действия">⚙️</button>
+        <div class="fab-menu" id="fabMenu">
+            <a href="#">Сайты Google</a>
+            <a href="#">Сообщить о нарушении</a>
+            <a href="#">Сведения о странице</a>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        (function() {
+        var user = sessionStorage.getItem('currentUser');
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+    })();
+        // Данные занятий для главной страницы (темы 8-12)
+        const mainPageLessons = [
+            { day: '27', month: 'ноября', title: '<strong>Тема 8.</strong> Граф Комаровский: основатель внутренней стражи, верный слуга Отечества', link: 'topic8.html' },
+            { day: '16', month: 'января', title: '<strong>Тема 9.</strong> Стальной кулак правопорядка: роль оборонного машиностроения и судостроения в оснащении Росгвардии', link: 'topic9.html' },
+            { day: '16', month: 'февраля', title: '<strong>Тема 10.</strong> Настоящий кадет: Честь и мужество', link: 'topic10.html' },
+            { day: '26', month: 'февраля', title: '<strong>Тема 11.</strong> Россия индустриальная: космическая отрасль', link: 'topic11.html' },
+            { day: '05', month: 'марта', title: '<strong>Тема 12.</strong> Кинологическая служба ВНГ: верность длиною в жизнь', link: 'topic12.html' }
+        ];
+
+        function renderMainPageLessons() {
+            const container = document.getElementById('lessons-cards-container');
+            if (!container) return;
+            container.innerHTML = mainPageLessons.map(lesson => `
+                <div class="lesson-card-horizontal">
+                    <div class="lesson-card-date-horizontal">
+                        <div class="lesson-card-day-horizontal">${lesson.day}</div>
+                        <div class="lesson-card-month-horizontal">${lesson.month}</div>
+                    </div>
+                    <div class="lesson-card-info-horizontal">
+                        <div class="lesson-card-title-horizontal">${lesson.title}</div>
+                    </div>
+                    <a href="${lesson.link}" class="lesson-card-link-horizontal">К занятию →</a>
+                </div>
+            `).join('');
+        }
+
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        function displayAuthInterface() {
+            const user = getCurrentUser();
+            const userHeader = document.getElementById('userHeader');
+            const commanderNav = document.getElementById('commanderNav');
+            const cadetNav = document.getElementById('cadetNav');
+            
+            if (!user) {
+                userHeader.innerHTML = `<a href="login.html" class="login-link">Вход для сотрудников →</a>`;
+                if (commanderNav) commanderNav.style.display = 'none';
+                if (cadetNav) cadetNav.style.display = 'none';
+                return;
+            }
+            
+            if (user.role === 'admin') {
+                window.location.href = 'admin-panel.html';
+                return;
+            }
+            
+            if (user.role === 'commander') {
+                // Получаем фото командира
+                const photoUrl = getCommanderPhoto ? getCommanderPhoto(user.id) : null;
+                const avatarHtml = photoUrl ? 
+                    `<img src="${photoUrl}" class="commander-avatar" alt="Фото">` : 
+                    `<div class="commander-avatar-placeholder">👨‍✈️</div>`;
+                
+                userHeader.innerHTML = `
+                    <div class="user-info-wrapper">
+                        ${avatarHtml}
+                        <span class="user-badge">${user.name} (взвод №${user.platoon})</span>
+                        <a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a>
+                    </div>
+                `;
+                if (commanderNav) commanderNav.style.display = 'block';
+                if (cadetNav) cadetNav.style.display = 'none';
+                return;
+            }
+            
+            if (user.role === 'cadet') {
+                userHeader.innerHTML = `
+                    <div class="user-info-wrapper">
+                        <div class="commander-avatar-placeholder" style="background: #c9a45a;">🎓</div>
+                        <span class="user-badge">${user.name} (взвод №${user.platoon})</span>
+                        <a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a>
+                    </div>
+                `;
+                if (commanderNav) commanderNav.style.display = 'none';
+                if (cadetNav) cadetNav.style.display = 'block';
+                return;
+            }
+        }
+
+        function setupScrollButton() {
+            const scrollBtn = document.querySelector('.scroll-down');
+            if (scrollBtn) {
+                scrollBtn.addEventListener('click', () => {
+                    const nextSection = document.querySelector('.course-section');
+                    if (nextSection) nextSection.scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+        }
+
+        function setupCarousel() {
+            const prevBtn = document.querySelector('.carousel-prev');
+            const nextBtn = document.querySelector('.carousel-next');
+            const carouselImage = document.querySelector('.carousel-image');
+            
+            if (prevBtn && nextBtn && carouselImage) {
+                const images = [
+                    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                    'linear-gradient(135deg, #880000 0%, #440000 100%)'
+                ];
+                let currentIndex = 0;
+                const updateImage = () => { carouselImage.style.background = images[currentIndex]; };
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    updateImage();
+                });
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    updateImage();
+                });
+                updateImage();
+            }
+        }
+
+        function setupFabMenu() {
+            const fabBtn = document.getElementById('fabButton');
+            const fabMenu = document.getElementById('fabMenu');
+            if (fabBtn && fabMenu) {
+                fabBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fabMenu.classList.toggle('active');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!fabBtn.contains(e.target) && !fabMenu.contains(e.target)) {
+                        fabMenu.classList.remove('active');
+                    }
+                });
+            }
+        }
+
+        function setupMobileMenu() {
+            const toggleBtn = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.main-nav');
+            if (toggleBtn && nav) {
+                toggleBtn.addEventListener('click', () => {
+                    const isVisible = nav.style.display === 'flex';
+                    nav.style.display = isVisible ? 'none' : 'flex';
+                    if (!isVisible) {
+                        nav.style.flexDirection = 'column';
+                        nav.style.position = 'absolute';
+                        nav.style.top = '100%';
+                        nav.style.left = '0';
+                        nav.style.width = '100%';
+                        nav.style.backgroundColor = 'white';
+                        nav.style.padding = '20px';
+                        nav.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                        nav.style.zIndex = '999';
+                    }
+                });
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        nav.style.display = 'flex';
+                        nav.style.flexDirection = 'row';
+                        nav.style.position = 'static';
+                        nav.style.padding = '0';
+                        nav.style.boxShadow = 'none';
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayAuthInterface();
+            renderMainPageLessons();
+            setupScrollButton();
+            setupCarousel();
+            setupFabMenu();
+            setupMobileMenu();
+        });
+        // ========== СЧЕТЧИК СООБЩЕНИЙ ДЛЯ КОМАНДИРА ==========
+function updateChatBadge() {
+    var user = getCurrentUser();
+    if (!user || user.role !== 'commander') return;
+    
+    var unreadCount = typeof getTotalUnreadCount === 'function' ? getTotalUnreadCount(user.id) : 0;
+    var commanderNav = document.getElementById('commanderNav');
+    
+    if (commanderNav) {
+        var chatLink = commanderNav.querySelector('a[href="commander-chat.html"]');
+        if (chatLink) {
+            var oldBadge = chatLink.querySelector('.chat-badge');
+            if (oldBadge) oldBadge.remove();
+            if (unreadCount > 0) {
+                var badge = document.createElement('span');
+                badge.className = 'chat-badge';
+                badge.style.cssText = 'background: #c00; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; margin-left: 8px; font-weight: bold;';
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                chatLink.appendChild(badge);
+            }
+        }
+    }
+}
+
+// Слушаем изменения в localStorage (мгновенная синхронизация между вкладками)
+window.addEventListener('storage', function(e) {
+    if (e.key === 'chatMessagesUpdated' || e.key === 'chatMessages') {
+        updateChatBadge();
+    }
+});
+
+// Запускаем обновление счетчика
+if (typeof getCurrentUser === 'function') {
+    updateChatBadge();
+}
+    </script>
+    <!-- Кнопка установки PWA -->
+<div id="installPWA" class="no-print" style="position: fixed; bottom: 80px; right: 20px; z-index: 1000; display: none;">
+    <button id="installBtn" style="background: #880000; color: white; border: none; padding: 12px 20px; border-radius: 30px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+        📱 Установить приложение
+    </button>
+</div>
+
+<script>
+    let deferredPrompt;
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installDiv = document.getElementById('installPWA');
+        if (installDiv) installDiv.style.display = 'block';
+    });
+    
+    document.getElementById('installBtn')?.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Результат: ${outcome}`);
+            deferredPrompt = null;
+            document.getElementById('installPWA').style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

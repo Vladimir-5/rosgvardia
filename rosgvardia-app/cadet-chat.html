@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат | Кадет | Росгвардия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f1e8; }
+        
+        .cadet-header {
+            background: linear-gradient(145deg, #1a2e3f, #2b4a5c);
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .cadet-header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #c9a45a;
+            padding: 5px 15px;
+            border-radius: 30px;
+        }
+        .cadet-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+        .cadet-avatar-placeholder { width: 36px; height: 36px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .user-name-text { font-size: 14px; font-weight: 600; color: #1a2e3f; }
+        .logout-btn { background: #c9a45a; color: #1a2e3f; border: none; padding: 5px 15px; border-radius: 30px; cursor: pointer; font-weight: 600; }
+        .logout-btn:hover { background: #b8944a; }
+        
+        .cadet-nav {
+            background: white;
+            padding: 0.8rem 2rem;
+            border-bottom: 2px solid #c9a45a;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .cadet-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            transition: all 0.3s;
+        }
+        .cadet-nav a:hover, .cadet-nav a.active {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        .chat-container { max-width: 1200px; margin: 0 auto; padding: 2rem; display: flex; gap: 2rem; flex-wrap: wrap; }
+        .users-list { flex: 1; min-width: 250px; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); height: 70vh; display: flex; flex-direction: column; }
+        .users-header { background: #3d2b1a; color: white; padding: 1rem; font-weight: 600; }
+        .users-scroll { flex: 1; overflow-y: auto; }
+        .user-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #e0d0c0; transition: background 0.2s; }
+        .user-item:hover { background: #f5efe6; }
+        .user-item.active { background: #c9a45a; color: white; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; background: #c9a45a; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; overflow: hidden; }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-info { flex: 1; }
+        .user-name-chat { font-weight: 600; }
+        .user-last-message { font-size: 0.7rem; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .unread-badge { background: #c00; color: white; border-radius: 50%; padding: 2px 8px; font-size: 0.7rem; margin-left: 8px; }
+        
+        .chat-area { flex: 2; min-width: 300px; background: white; border-radius: 1rem; display: flex; flex-direction: column; height: 70vh; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .chat-header { background: #3d2b1a; color: white; padding: 1rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 10px; }
+        .message { max-width: 70%; padding: 8px 12px; border-radius: 1rem; word-wrap: break-word; }
+        .message-out { background: #c9a45a; color: #3d2b1a; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .message-in { background: #f5efe6; color: #333; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .message-info { font-size: 0.7rem; margin-top: 4px; color: #888; text-align: right; }
+        .chat-input { display: flex; padding: 1rem; border-top: 1px solid #e0d0c0; gap: 10px; }
+        .chat-input input { flex: 1; padding: 10px; border: 2px solid #e0d0c0; border-radius: 2rem; outline: none; }
+        .chat-input button { background: #c9a45a; color: #3d2b1a; border: none; padding: 10px 20px; border-radius: 2rem; cursor: pointer; font-weight: 600; }
+        .chat-input button:hover { background: #b8944a; }
+        .no-chat-selected { display: flex; align-items: center; justify-content: center; height: 100%; color: #888; }
+        
+        @media (max-width: 768px) {
+            .cadet-header { flex-direction: column; gap: 0.5rem; text-align: center; }
+            .cadet-nav { justify-content: center; }
+            .chat-container { flex-direction: column; padding: 1rem; }
+            .users-list, .chat-area { height: 50vh; }
+            .message { max-width: 85%; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+    <div class="cadet-header">
+        <h1>⚜️ Росгвардия — мои горизонты</h1>
+        <div class="user-section">
+            <div class="user-info-wrapper" id="userInfoWrapper"></div>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
+        </div>
+    </div>
+    
+    <div class="cadet-nav">
+        <a href="cadet-courses.html">📚 Курс занятий</a>
+        <a href="cadet-institutes.html">🏛️ Институты ВНГ РФ</a>
+        <a href="cadet-grades.html">📊 Мои оценки</a>
+        <a href="cadet-chat.html" class="active">💬 Чат</a>
+    </div>
+    
+    <div class="chat-container">
+        <div class="users-list">
+            <div class="users-header">👥 Собеседники</div>
+            <div class="users-scroll" id="usersList">
+                <div style="padding: 1rem; text-align: center;">Загрузка...</div>
+            </div>
+        </div>
+        
+        <div class="chat-area" id="chatArea">
+            <div class="chat-header" id="chatHeader">
+                <div class="user-avatar" id="chatAvatar">👨‍✈️</div>
+                <div id="chatUserName">Выберите собеседника</div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="no-chat-selected">👈 Выберите собеседника из списка</div>
+            </div>
+            <div class="chat-input" id="chatInput" style="display: none;">
+                <input type="text" id="messageInput" placeholder="Введите сообщение..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">📨 Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        var currentUser = null;
+        var commanderInfo = null;
+        var allCadets = [];
+        var currentRecipient = null;
+        
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+        
+        function getCommanderByPlatoon(platoon) {
+            var commanders = JSON.parse(localStorage.getItem('commanders') || '[]');
+            var users = JSON.parse(localStorage.getItem('users') || '[]');
+            var allCommanders = [...users.filter(u => u.role === 'commander'), ...commanders];
+            return allCommanders.find(c => c.platoon === platoon);
+        }
+        
+        function loadUsers() {
+            commanderInfo = getCommanderByPlatoon(currentUser.platoon);
+            
+            var cadetsRaw = JSON.parse(localStorage.getItem('cadets') || '[]');
+            allCadets = cadetsRaw.filter(c => c.platoon === currentUser.platoon && c.id !== currentUser.id);
+            
+            var dialogs = getDialogs(currentUser.id);
+            var usersWithLastMsg = {};
+            dialogs.forEach(d => { usersWithLastMsg[d.userId] = d; });
+            
+            var container = document.getElementById('usersList');
+            var html = '';
+            
+            // Командир
+            if (commanderInfo) {
+                var lastMsg = usersWithLastMsg[commanderInfo.id];
+                var lastMsgText = lastMsg ? (lastMsg.lastMessage.message.substring(0, 30) + (lastMsg.lastMessage.message.length > 30 ? '...' : '')) : 'Нет сообщений';
+                var unreadCount = lastMsg ? lastMsg.unreadCount : 0;
+                var unreadHtml = unreadCount > 0 ? '<span class="unread-badge">' + unreadCount + '</span>' : '';
+                
+                var photoUrl = typeof getCommanderPhoto === 'function' ? getCommanderPhoto(commanderInfo.id) : null;
+                var avatarHtml = photoUrl ? '<img src="' + photoUrl + '" style="width:45px;height:45px;border-radius:50%;object-fit:cover;">' : '<span style="font-size:1.3rem;">👨‍✈️</span>';
+                
+                html += '<div class="user-item" onclick="selectUser(' + commanderInfo.id + ', \'' + commanderInfo.name.replace(/'/g, "\\'") + '\', \'commander\')">';
+                html += '<div class="user-avatar">' + avatarHtml + '</div>';
+                html += '<div class="user-info">';
+                html += '<div class="user-name-chat">Командир ' + commanderInfo.name + unreadHtml + '</div>';
+                html += '<div class="user-last-message">' + lastMsgText + '</div>';
+                html += '</div></div>';
+            }
+            
+            // Другие кадеты
+            for (var i = 0; i < allCadets.length; i++) {
+                var c = allCadets[i];
+                var lastMsg = usersWithLastMsg[c.id];
+                var lastMsgText = lastMsg ? (lastMsg.lastMessage.message.substring(0, 30) + (lastMsg.lastMessage.message.length > 30 ? '...' : '')) : 'Нет сообщений';
+                var unreadCount = lastMsg ? lastMsg.unreadCount : 0;
+                var unreadHtml = unreadCount > 0 ? '<span class="unread-badge">' + unreadCount + '</span>' : '';
+                
+                var photoUrl = typeof getCadetPhoto === 'function' ? getCadetPhoto(c.id) : null;
+                var avatarHtml = photoUrl ? '<img src="' + photoUrl + '" style="width:45px;height:45px;border-radius:50%;object-fit:cover;">' : '<span style="font-size:1.3rem;">🎓</span>';
+                
+                html += '<div class="user-item" onclick="selectUser(' + c.id + ', \'' + c.name.replace(/'/g, "\\'") + '\', \'cadet\')">';
+                html += '<div class="user-avatar">' + avatarHtml + '</div>';
+                html += '<div class="user-info">';
+                html += '<div class="user-name-chat">' + c.name + unreadHtml + '</div>';
+                html += '<div class="user-last-message">' + lastMsgText + '</div>';
+                html += '</div></div>';
+            }
+            
+            if (html === '') {
+                container.innerHTML = '<div style="padding: 1rem; text-align: center;">Нет собеседников</div>';
+            } else {
+                container.innerHTML = html;
+            }
+        }
+        
+        function selectUser(userId, userName, userRole) {
+            currentRecipient = { id: userId, name: userName, role: userRole };
+            
+            markMessagesAsRead(userId, currentUser.id);
+            
+            var avatarHtml = userRole === 'commander' ? '👨‍✈️' : '🎓';
+            document.getElementById('chatAvatar').innerHTML = avatarHtml;
+            document.getElementById('chatUserName').innerHTML = userName;
+            document.getElementById('chatInput').style.display = 'flex';
+            
+            loadMessages();
+            loadUsers();
+        }
+        
+        function loadMessages() {
+            if (!currentRecipient) return;
+            
+            var messages = getDialog(currentUser.id, currentRecipient.id);
+            var container = document.getElementById('chatMessages');
+            
+            if (messages.length === 0) {
+                container.innerHTML = '<div class="no-chat-selected">💬 Напишите сообщение</div>';
+                return;
+            }
+            
+            var html = '';
+            for (var i = 0; i < messages.length; i++) {
+                var m = messages[i];
+                var isOutgoing = m.fromId === currentUser.id;
+                var messageClass = isOutgoing ? 'message-out' : 'message-in';
+                var senderName = isOutgoing ? 'Вы' : m.fromName;
+                
+                html += '<div class="message ' + messageClass + '">';
+                html += '<div>' + m.message + '</div>';
+                html += '<div class="message-info">' + senderName + ', ' + new Date(m.createdAt).toLocaleString() + '</div>';
+                html += '</div>';
+            }
+            
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function sendMessage() {
+            var input = document.getElementById('messageInput');
+            var message = input.value.trim();
+            
+            if (!message) return;
+            if (!currentRecipient) {
+                alert('Выберите собеседника');
+                return;
+            }
+            
+            sendChatMessage(
+                currentUser.id,
+                currentUser.name,
+                currentUser.role,
+                currentRecipient.id,
+                currentRecipient.name,
+                currentRecipient.role,
+                message
+            );
+            
+            input.value = '';
+            loadMessages();
+            loadUsers();
+        }
+        
+        (function() {
+            currentUser = getCurrentUser();
+            if (!currentUser || currentUser.role !== 'cadet') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            var photoUrl = typeof getCadetPhoto === 'function' ? getCadetPhoto(currentUser.id) : null;
+            var avatarHtml = photoUrl ? 
+                '<img src="' + photoUrl + '" class="cadet-avatar">' : 
+                '<div class="cadet-avatar-placeholder">🎓</div>';
+            document.getElementById('userInfoWrapper').innerHTML = avatarHtml + '<span class="user-name-text">' + currentUser.name + ' (взвод №' + currentUser.platoon + ')</span>';
+            
+            loadUsers();
+            
+            setInterval(function() {
+                if (currentRecipient) {
+                    loadMessages();
+                    loadUsers();
+                } else {
+                    loadUsers();
+                }
+            }, 3000);
+        })();
+       // ========== СЧЕТЧИК СООБЩЕНИЙ ==========
+function updateChatBadge() {
+    if (!currentUser) return;
+    var unreadCount = getTotalUnreadCount(currentUser.id);
+    var cadetNav = document.querySelector('.cadet-nav');
+    if (cadetNav) {
+        var chatLink = cadetNav.querySelector('a[href="cadet-chat.html"]');
+        if (chatLink) {
+            var oldBadge = chatLink.querySelector('.chat-badge');
+            if (oldBadge) oldBadge.remove();
+            if (unreadCount > 0) {
+                var badge = document.createElement('span');
+                badge.className = 'chat-badge';
+                badge.style.cssText = 'background: #c00; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; margin-left: 8px; font-weight: bold;';
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                chatLink.appendChild(badge);
+            }
+        }
+    }
+}
+
+// В функции selectUser добавьте updateChatBadge()
+function selectUser(userId, userName, userRole) {
+    currentRecipient = { id: userId, name: userName, role: userRole };
+    
+    markMessagesAsRead(userId, currentUser.id);
+    
+    var avatarHtml = userRole === 'commander' ? '👨‍✈️' : '🎓';
+    document.getElementById('chatAvatar').innerHTML = avatarHtml;
+    document.getElementById('chatUserName').innerHTML = userName;
+    document.getElementById('chatInput').style.display = 'flex';
+    
+    loadMessages();
+    loadUsers();
+    updateChatBadge(); // <--- ДОБАВИТЬ ЭТУ СТРОКУ
+}
+
+// В функции sendMessage добавьте updateChatBadge()
+function sendMessage() {
+    var input = document.getElementById('messageInput');
+    var message = input.value.trim();
+    
+    if (!message) return;
+    if (!currentRecipient) {
+        alert('Выберите собеседника');
+        return;
+    }
+    
+    sendChatMessage(
+        currentUser.id,
+        currentUser.name,
+        currentUser.role,
+        currentRecipient.id,
+        currentRecipient.name,
+        currentRecipient.role,
+        message
+    );
+    
+    input.value = '';
+    loadMessages();
+    loadUsers();
+    updateChatBadge(); // <--- ДОБАВИТЬ ЭТУ СТРОКУ
+}
+
+// Слушаем изменения в localStorage
+window.addEventListener('storage', function(e) {
+    if (e.key === 'chatMessagesUpdated' || e.key === 'chatMessages') {
+        updateChatBadge();
+        if (currentRecipient) {
+            loadMessages();
+        }
+        loadUsers();
+    }
+});
+
+// Слушаем кастомное событие
+window.addEventListener('messagesUpdated', function() {
+    updateChatBadge();
+    if (currentRecipient) {
+        loadMessages();
+    }
+    loadUsers();
+});
+
+// Запускаем
+updateChatBadge();
+    </script>
+</body>
+</html>

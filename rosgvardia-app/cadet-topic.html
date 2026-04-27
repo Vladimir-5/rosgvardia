@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Занятие | Кадет | Росгвардия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f1e8; }
+        
+        .cadet-header {
+            background: linear-gradient(145deg, #1a2e3f, #2b4a5c);
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .cadet-header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; }
+        
+        /* Стили для блока пользователя (как у командира) */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #c9a45a;
+            padding: 5px 15px;
+            border-radius: 30px;
+        }
+        .cadet-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+        }
+        .cadet-avatar-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .user-name-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a2e3f;
+        }
+        .logout-btn {
+            background: #c9a45a;
+            color: #1a2e3f;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .logout-btn:hover {
+            background: #b8944a;
+        }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #5e3e2b; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        
+        .topic-card {
+            background: linear-gradient(135deg, #3d2b1a, #5e3e2b);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #f5e7d9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .topic-card h2 { 
+            font-size: 1.5rem; 
+            margin-bottom: 0.8rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .topic-card p { 
+            opacity: 0.9; 
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .video-block {
+            background: #1a2e3f;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px solid #c9a45a;
+        }
+        .video-title {
+            color: #f5e7d9;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        .test-block {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 2px solid #c9a45a;
+        }
+        .test-title {
+            font-size: 1.5rem;
+            color: #3d2b1a;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #c9a45a;
+            padding-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .test-info {
+            background: #f5efe6;
+            padding: 0.8rem;
+            border-radius: 0.8rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #5e3e2b;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .grade-info {
+            background: #e9d6b5;
+            padding: 0.5rem;
+            border-radius: 0.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .grade-scale {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .grade-item {
+            text-align: center;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            background: #f5efe6;
+        }
+        .grade-item.grade-2 { color: #c00; font-weight: bold; }
+        .grade-item.grade-3 { color: #e68a00; font-weight: bold; }
+        .grade-item.grade-4 { color: #0066cc; font-weight: bold; }
+        .grade-item.grade-5 { color: #2e7d32; font-weight: bold; }
+        
+        .question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0d0c0;
+        }
+        .question-text {
+            font-weight: 600;
+            color: #3d2b1a;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .option {
+            display: block;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+        .option:hover {
+            background: #f5efe6;
+        }
+        .option input { margin-right: 0.8rem; }
+        
+        .submit-btn {
+            background: #3d2b1a;
+            color: #f5e7d9;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+        .submit-btn:hover { background: #5e3e2b; transform: scale(1.02); }
+        
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        .result-grade-2 { background: #f8d7da; color: #721c24; border-left: 4px solid #c00; }
+        .result-grade-3 { background: #fff3cd; color: #856404; border-left: 4px solid #e68a00; }
+        .result-grade-4 { background: #cce5ff; color: #004085; border-left: 4px solid #0066cc; }
+        .result-grade-5 { background: #d4edda; color: #155724; border-left: 4px solid #2e7d32; }
+        
+        .already-passed {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+            border-left: 4px solid #2e7d32;
+        }
+        
+        .progress-bar {
+            background: #e0d0c0;
+            border-radius: 1rem;
+            height: 8px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: #4caf50;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .cadet-header { flex-direction: column; gap: 0.5rem; text-align: center; }
+            .container { padding: 1rem; }
+            .test-info { flex-direction: column; align-items: center; text-align: center; }
+            .grade-scale { flex-wrap: wrap; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+    <div class="cadet-header">
+        <h1>⚜️ Росгвардия — мои горизонты</h1>
+        <div class="user-section">
+            <div class="user-info-wrapper" id="userInfoWrapper"></div>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <a href="cadet-courses.html" class="back-link">← Назад к курсу занятий</a>
+        
+        <div class="topic-card" id="topicCard">
+            <h2 id="topicTitle">Загрузка...</h2>
+            <p id="topicDescription"></p>
+        </div>
+        
+        <div class="video-block">
+            <div class="video-title">🎬 Видеоматериал по теме</div>
+            <div class="video-container" id="videoContainer">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #000; color: #fff;">
+                    Загрузка видео...
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-block" id="testBlock">
+            <div class="test-title">📝 Проверь свои знания</div>
+            <div class="test-info">
+                <span>📋 Вопросов: <strong id="questionsCount">5</strong></span>
+                <span>⭐ Максимальный балл: <strong>5</strong></span>
+            </div>
+            
+            <div class="grade-info">
+                <span>📊 Шкала оценок:</span>
+                <div class="grade-scale">
+                    <div class="grade-item grade-2">0-2 прав. → Оценка 2</div>
+                    <div class="grade-item grade-3">3 прав. → Оценка 3</div>
+                    <div class="grade-item grade-4">4 прав. → Оценка 4</div>
+                    <div class="grade-item grade-5">5 прав. → Оценка 5</div>
+                </div>
+            </div>
+            
+            <div id="questionsContainer"></div>
+            <div class="progress-bar" id="progressBar" style="display: none;">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <button class="submit-btn" id="submitBtn">Проверить результаты</button>
+            <div id="resultMessage"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const topicId = parseInt(urlParams.get('id'));
+        
+        let currentCadet = null;
+        let questions = [];
+        let userAnswers = {};
+        
+        const lessonsData = {
+            1: { 
+                title: "Тема 1. Росгвардия — сила и безопасность России",
+                description: "Познакомьтесь с историей создания, структурой и основными задачами Федеральной службы войск национальной гвардии Российской Федерации.",
+                video: "https://vk.com/video_ext.php?oid=-227177527&id=456239258&hash=e7f392b48677ec70"
+            },
+            2: { 
+                title: "Тема 2. Непобеждённый: подвиг Героя России генерал-полковника Анатолия Александровича Романова",
+                description: "История жизни, военного пути и подвига Героя России А.А. Романова. Пример мужества, стойкости и верности воинскому долгу.",
+                video: "https://rutube.ru/play/embed/956550a6c60760be2b627601982e3a2c/"
+            },
+            3: { 
+                title: "Тема 3. Инженерные войска: Умная сила армии",
+                description: "Инженерное обеспечение войск, специальности, обучение в Пермском военном институте.",
+                video: "https://vk.com/video_ext.php?oid=-200002032&id=456239063&hash=84fb364cd690eaf6"
+            },
+            4: { 
+                title: "Тема 4. Атомная отрасль России: технологический щит Родины",
+                description: "80 лет атомной промышленности России. Атомные электростанции, ядерные технологии, профессии и безопасность.",
+                video: "https://vk.com/video_ext.php?oid=-135454514&id=456249759&hash=25d3377aad7c4af6"
+            },
+            5: { 
+                title: "Тема 5. Космическая отрасль России: орбиты технологий и безопасности",
+                description: "Космические технологии, спутниковая навигация ГЛОНАСС, космодромы России.",
+                video: "https://vk.com/video_ext.php?oid=-227177527&id=456239228&hash=01e23646ab759282"
+            },
+            6: { 
+                title: "Тема 6. Россия аграрная: продовольственная безопасность и надежный тыл",
+                description: "Агропромышленный комплекс, продовольственная безопасность, современные технологии в сельском хозяйстве.",
+                video: "https://vk.com/video_ext.php?oid=-135454514&id=456249868&hash=7d334feba90c032f"
+            },
+            7: { 
+                title: "Тема 7. Энергетика — основа жизни страны",
+                description: "Энергетическая безопасность, виды электростанций, возобновляемые источники энергии, профессии в энергетике.",
+                video: "https://vk.com/video_ext.php?oid=-227177527&id=456239258&hash=e7f392b48677ec70"
+            },
+            8: { 
+                title: "Тема 8. Граф Комаровский: основатель внутренней стражи, верный слуга Отечества",
+                description: "История создания внутренней стражи, личность графа Комаровского, его вклад в формирование войск правопорядка.",
+                video: "https://rutube.ru/play/embed/956550a6c60760be2b627601982e3a2c/"
+            },
+            9: { 
+                title: "Тема 9. Оборонная промышленность России: машиностроение и судостроение",
+                description: "Оборонно-промышленный комплекс, современное вооружение, кораблестроение, станки с ЧПУ.",
+                video: "https://vk.com/video_ext.php?oid=-135454514&id=456250261&hash=12fc306dad4ebc78"
+            },
+            10: { 
+                title: "Тема 10. Настоящий кадет: Честь и мужество",
+                description: "Воспитание кадетов, понятия чести и мужества, традиции кадетских училищ, имя Героя России Ф. Кузьмина.",
+                video: "https://ok.ru/videoembed/4814578125483"
+            },
+            11: { 
+                title: "Тема 11. Россия индустриальная: космическая отрасль",
+                description: "Профессия инженер-испытатель, космические технологии, роль космоса в жизни страны.",
+                video: "https://vk.com/video_ext.php?oid=-193554174&id=456239913&hash=2345e58700503c06"
+            },
+            12: { 
+                title: "Тема 12. Кинологическая служба ВНГ: верность длиною в жизнь",
+                description: "Кинологическая служба Росгвардии, подготовка служебных собак, подвиги четвероногих героев.",
+                video: "https://rutube.ru/play/embed/4e0ce03824a61a4507d46e710d223283/"
+            }
+        };
+        
+        const allQuestions = {
+            1: [
+                { question: "Когда была создана Росгвардия?", options: ["5 апреля 2016", "12 июня 2015", "1 сентября 2017"], correct: 0 },
+                { question: "Кто является Верховным Главнокомандующим Вооружёнными силами РФ?", options: ["Президент РФ", "Министр обороны", "Директор Росгвардии"], correct: 0 },
+                { question: "Какое подразделение Росгвардии занимается охраной общественного порядка?", options: ["ОМОН", "СОБР", "Вневедомственная охрана"], correct: 2 },
+                { question: "Девиз Росгвардии?", options: ["Всегда на страже", "Служу России", "За нами правда"], correct: 0 },
+                { question: "Кто входит в состав Росгвардии?", options: ["Войска национальной гвардии", "Воздушно-десантные войска", "Военно-морской флот"], correct: 0 }
+            ],
+            2: [
+                { question: "Какое воинское звание у А.А. Романова?", options: ["Генерал-полковник", "Генерал-лейтенант", "Полковник"], correct: 0 },
+                { question: "В каком году был тяжело ранен А.А. Романов?", options: ["1995", "1994", "1996"], correct: 0 },
+                { question: "Какое звание присвоено А.А. Романову?", options: ["Герой России", "Герой Советского Союза", "Орден Мужества"], correct: 0 },
+                { question: "В каком военном училище учился А.А. Романов?", options: ["Саратовское", "Московское", "Пермское"], correct: 0 },
+                { question: "Какое качество характеризует А.А. Романова?", options: ["Стойкость и мужество", "Безразличие", "Равнодушие"], correct: 0 }
+            ],
+            3: [
+                { question: "Чем занимаются инженерные войска?", options: ["Строят мосты и разминируют", "Лечат раненых", "Управляют самолётами"], correct: 0 },
+                { question: "Где готовят инженерные кадры для Росгвардии?", options: ["Пермский военный институт", "МГУ", "СПбГУ"], correct: 0 },
+                { question: "Сколько лет длится обучение в Пермском военном институте?", options: ["5 лет", "4 года", "6 лет"], correct: 0 },
+                { question: "Какое воинское звание получают выпускники ПВИ?", options: ["Лейтенант", "Младший сержант", "Прапорщик"], correct: 0 },
+                { question: "Что изучают курсанты инженерного факультета?", options: ["Взрывные работы и инженерное обеспечение", "Медицину", "Юриспруденцию"], correct: 0 }
+            ],
+            4: [
+                { question: "Сколько лет атомной промышленности России исполнилось в 2025 году?", options: ["80 лет", "70 лет", "100 лет"], correct: 0 },
+                { question: "Что такое АЭС?", options: ["Атомная электростанция", "Автоматическая станция", "Авиационная станция"], correct: 0 },
+                { question: "Какая государственная корпорация руководит атомной отраслью?", options: ["Росатом", "Роскосмос", "Роснефть"], correct: 0 },
+                { question: "Какой элемент используется в качестве топлива в ядерных реакторах?", options: ["Уран", "Плутоний", "Радий"], correct: 0 },
+                { question: "Где находится первая в мире атомная электростанция?", options: ["Обнинск", "Москва", "Санкт-Петербург"], correct: 0 }
+            ],
+            5: [
+                { question: "Когда был запущен первый искусственный спутник Земли?", options: ["4 октября 1957", "12 апреля 1961", "20 июля 1969"], correct: 0 },
+                { question: "Кто был первым космонавтом в мире?", options: ["Юрий Гагарин", "Герман Титов", "Валентина Терешкова"], correct: 0 },
+                { question: "Как называется российская глобальная навигационная спутниковая система?", options: ["ГЛОНАСС", "GPS", "Galileo"], correct: 0 },
+                { question: "Какая ракета-носитель чаще всего используется для запуска российских спутников?", options: ["Союз", "Сатурн", "Дельта"], correct: 0 },
+                { question: "Сколько космодромов находится на территории России?", options: ["6", "4", "8"], correct: 0 }
+            ],
+            6: [
+                { question: "Что такое АПК?", options: ["Агропромышленный комплекс", "Автоматический комплекс", "Авиационный комплекс"], correct: 0 },
+                { question: "Что означает понятие «продовольственная безопасность»?", options: ["Обеспечение страны собственными продуктами", "Экспорт продуктов", "Импорт продуктов"], correct: 0 },
+                { question: "Какая профессия напрямую связана с сельским хозяйством?", options: ["Агроном", "Врач", "Учитель"], correct: 0 },
+                { question: "Что выращивают в современных тепличных комплексах?", options: ["Овощи и зелень", "Зерно", "Подсолнечник"], correct: 0 },
+                { question: "Какая техника широко используется в современном сельском хозяйстве?", options: ["Трактор", "Самолёт", "Поезд"], correct: 0 }
+            ],
+            7: [
+                { question: "Что такое энергия?", options: ["Способность совершать работу", "Вид топлива", "Электрический ток"], correct: 0 },
+                { question: "Какой источник энергии является возобновляемым?", options: ["Солнечный свет", "Уголь", "Нефть"], correct: 0 },
+                { question: "Что производят на гидроэлектростанции (ГЭС)?", options: ["Электроэнергию", "Тепло", "Питьевую воду"], correct: 0 },
+                { question: "Какая профессия связана с энергетикой?", options: ["Электромонтёр", "Строитель", "Продавец"], correct: 0 },
+                { question: "Какой способ помогает экономить электроэнергию в быту?", options: ["Выключать свет", "Включать все приборы", "Оставлять технику"], correct: 0 }
+            ],
+            8: [
+                { question: "Кто основал внутреннюю стражу России?", options: ["Граф Комаровский", "Пётр I", "Александр Невский"], correct: 0 },
+                { question: "В каком году была создана внутренняя стража?", options: ["1811", "1700", "1917"], correct: 0 },
+                { question: "Под чьим командованием служил граф Комаровский?", options: ["А.В. Суворов", "М.И. Кутузов", "Г.К. Жуков"], correct: 0 },
+                { question: "Какое воинское звание было у графа Комаровского?", options: ["Генерал от инфантерии", "Фельдмаршал", "Капитан"], correct: 0 },
+                { question: "Сколько лет граф Комаровский руководил Отдельным корпусом внутренней стражи?", options: ["15 лет", "10 лет", "5 лет"], correct: 0 }
+            ],
+            9: [
+                { question: "Что означает аббревиатура ОПК?", options: ["Оборонно-промышленный комплекс", "Оперативный комплекс", "Оборонный корпус"], correct: 0 },
+                { question: "Какой бронированный автомобиль используется в Росгвардии?", options: ["Тигр", "Жигули", "Волга"], correct: 0 },
+                { question: "Что производят на оборонных заводах?", options: ["Военную технику", "Мебель", "Одежду"], correct: 0 },
+                { question: "Какая профессия нужна в судостроении?", options: ["Корабельный электрик", "Учитель", "Дизайнер"], correct: 0 },
+                { question: "Что означает ЧПУ в станкостроении?", options: ["Числовое программное управление", "Чрезвычайное положение", "Частное предприятие"], correct: 0 }
+            ],
+            10: [
+                { question: "Что такое честь для кадета?", options: ["Достоинство и верность принципам", "Наряд вне очереди", "Боевая награда"], correct: 0 },
+                { question: "Что такое мужество?", options: ["Преодоление страха", "Трусость", "Безразличие"], correct: 0 },
+                { question: "Чьё имя носит Пермское кадетское училище?", options: ["Ф. Кузьмина", "А. Романова", "М. Шолохова"], correct: 0 },
+                { question: "Какое качество важнее всего для кадета?", options: ["Дисциплина", "Скорость", "Сила"], correct: 0 },
+                { question: "Что значит «служить Отечеству»?", options: ["Защищать Родину", "Работать за деньги", "Путешествовать"], correct: 0 }
+            ],
+            11: [
+                { question: "Кто создал первый космический корабль?", options: ["С.П. Королёв", "К.Э. Циолковский", "Ю.А. Гагарин"], correct: 0 },
+                { question: "Как называется орбитальная станция?", options: ["МКС", "Салют", "Мир"], correct: 0 },
+                { question: "Кто руководит космической отраслью России?", options: ["Роскосмос", "Росатом", "Роснефть"], correct: 0 },
+                { question: "Что делают спутники дистанционного зондирования?", options: ["Фотографируют Землю", "Передают ТВ", "Ищут нефть"], correct: 0 },
+                { question: "Как называется специалист, испытывающий космическую технику?", options: ["Инженер-испытатель", "Космонавт", "Астроном"], correct: 0 }
+            ],
+            12: [
+                { question: "Что ищут собаки-сапёры?", options: ["Взрывчатку", "Еду", "Воду"], correct: 0 },
+                { question: "Какая порода служит в кинологии Росгвардии?", options: ["Овчарка", "Болонка", "Пудель"], correct: 0 },
+                { question: "Где готовят кинологов Росгвардии?", options: ["ПВИ", "МГУ", "СПбГУ"], correct: 0 },
+                { question: "Как называется специалист по служебным собакам?", options: ["Кинолог", "Ветеринар", "Зоолог"], correct: 0 },
+                { question: "Что означает верность для кинолога?", options: ["Не предавать", "Быть сильным", "Быстрым"], correct: 0 }
+            ]
+        };
+        
+        function getGrade(score) {
+            if (score <= 2) return { grade: 2, name: "2 (неудовлетворительно)", color: "grade-2", message: "Нужно повторить материал" };
+            if (score === 3) return { grade: 3, name: "3 (удовлетворительно)", color: "grade-3", message: "Минимальный проходной балл" };
+            if (score === 4) return { grade: 4, name: "4 (хорошо)", color: "grade-4", message: "Хороший результат!" };
+            return { grade: 5, name: "5 (отлично)", color: "grade-5", message: "Отличный результат!" };
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+        
+        function loadTopic() {
+            const lesson = lessonsData[topicId];
+            if (!lesson) {
+                window.location.href = 'cadet-courses.html';
+                return;
+            }
+            
+            document.title = `${lesson.title} | Кадет`;
+            document.getElementById('topicTitle').textContent = lesson.title;
+            document.getElementById('topicDescription').textContent = lesson.description;
+            document.getElementById('questionsCount').textContent = '5';
+            
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = `<iframe src="${lesson.video}" frameborder="0" allowfullscreen></iframe>`;
+            
+            questions = allQuestions[topicId] || [];
+            renderQuestions();
+            checkIfAlreadyPassed();
+        }
+        
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            if (questions.length === 0) {
+                container.innerHTML = '<p style="color: #888;">Вопросы для этого занятия в разработке</p>';
+                return;
+            }
+            
+            container.innerHTML = questions.map((q, idx) => `
+                <div class="question">
+                    <div class="question-text">${idx + 1}. ${q.question}</div>
+                    ${q.options.map((opt, optIdx) => `
+                        <label class="option">
+                            <input type="radio" name="q${idx}" value="${optIdx}" data-qidx="${idx}">
+                            ${String.fromCharCode(65 + optIdx)}. ${opt}
+                        </label>
+                    `).join('')}
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const qIdx = parseInt(e.target.dataset.qidx);
+                    userAnswers[qIdx] = parseInt(e.target.value);
+                    updateProgress();
+                });
+            });
+        }
+        
+        function updateProgress() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const totalQuestions = questions.length;
+            const percent = (answeredCount / totalQuestions) * 100;
+            
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            
+            if (answeredCount > 0) {
+                progressBar.style.display = 'block';
+                progressFill.style.width = `${percent}%`;
+            }
+        }
+        
+        function checkIfAlreadyPassed() {
+            const results = JSON.parse(localStorage.getItem('testResults') || '[]');
+            const existing = results.find(r => r.cadetId === currentCadet.id && r.topicId === topicId);
+            
+            if (existing) {
+                const gradeInfo = getGrade(existing.score);
+                document.getElementById('testBlock').innerHTML = `
+                    <div class="test-title">📝 Проверь свои знания</div>
+                    <div class="already-passed">
+                        ✅ Вы уже прошли тест по этой теме!<br>
+                        Ваша оценка: <strong>${gradeInfo.name}</strong><br>
+                        Результат: ${existing.score} из ${existing.totalQuestions} правильных ответов<br>
+                        Дата прохождения: ${new Date(existing.completedAt).toLocaleString()}<br><br>
+                        <a href="cadet-courses.html" style="color: #155724; font-weight: 600;">← Вернуться к курсу занятий</a>
+                    </div>
+                `;
+            }
+        }
+        
+        function submitTest() {
+            const results = JSON.parse(localStorage.getItem('testResults') || '[]');
+            const existing = results.find(r => r.cadetId === currentCadet.id && r.topicId === topicId);
+            
+            if (existing) {
+                document.getElementById('resultMessage').innerHTML = '<div class="result result-grade-3">⚠️ Вы уже проходили этот тест. Повторное прохождение недоступно.</div>';
+                return;
+            }
+            
+            const missingQuestions = [];
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === undefined) {
+                    missingQuestions.push(i + 1);
+                }
+            }
+            
+            if (missingQuestions.length > 0) {
+                document.getElementById('resultMessage').innerHTML = `<div class="result result-grade-3">❌ Вы ответили не на все вопросы!<br>Пропущены вопросы: ${missingQuestions.join(', ')}<br>Ответьте на все вопросы перед проверкой.</div>`;
+                setTimeout(() => {
+                    document.getElementById('resultMessage').innerHTML = '';
+                }, 4000);
+                return;
+            }
+            
+            let score = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === questions[i].correct) {
+                    score++;
+                }
+            }
+            
+            saveTestResult(currentCadet.id, topicId, score, questions.length, userAnswers);
+            
+            const gradeInfo = getGrade(score);
+            const resultDiv = document.getElementById('resultMessage');
+            
+            resultDiv.innerHTML = `
+                <div class="result ${gradeInfo.color}">
+                    🎓 Ваша оценка: <strong>${gradeInfo.name}</strong><br>
+                    Правильных ответов: ${score} из ${questions.length}<br>
+                    ${gradeInfo.message}<br><br>
+                    <a href="cadet-courses.html" style="color: inherit; font-weight: 600;">← Вернуться к курсу занятий</a>
+                </div>
+            `;
+            document.getElementById('submitBtn').style.display = 'none';
+        }
+        
+        (function() {
+            const user = getCurrentUser();
+            if (!user || user.role !== 'cadet') {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentCadet = user;
+            
+            // Получаем фото кадета
+            const cadetPhotoUrl = typeof getCadetPhoto === 'function' ? getCadetPhoto(user.id) : null;
+            
+            // Аватар
+            let avatarHtml = '';
+            if (cadetPhotoUrl) {
+                avatarHtml = `<img src="${cadetPhotoUrl}" class="cadet-avatar" alt="Фото">`;
+            } else {
+                avatarHtml = `<div class="cadet-avatar-placeholder">🎓</div>`;
+            }
+            
+            // Вставляем в жёлтую обёртку
+            document.getElementById('userInfoWrapper').innerHTML = `
+                ${avatarHtml}
+                <span class="user-name-text">${user.name} (взвод №${user.platoon})</span>
+            `;
+            
+            loadTopic();
+            document.getElementById('submitBtn')?.addEventListener('click', submitTest);
+        })();
+    </script>
+</body>
+</html>

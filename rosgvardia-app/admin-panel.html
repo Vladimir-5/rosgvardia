@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора | Росгвардия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f1e8; }
+        
+        .admin-header {
+            background: linear-gradient(145deg, #3d2b1a, #5e3e2b);
+            padding: 1rem 2rem;
+            color: #f5e7d9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .admin-header h1 { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; }
+        .user-info { background: #c9a45a; color: #3d2b1a; padding: 0.3rem 1rem; border-radius: 2rem; font-weight: 600; }
+        .logout-btn { background: #c9a45a; color: #3d2b1a; border: none; padding: 0.5rem 1.5rem; border-radius: 2rem; cursor: pointer; font-weight: 700; margin-left: 1rem; }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .section {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e0d0c0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            color: #3d2b1a;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #c9a45a;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .form-grid input, .form-grid select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0d0c0;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+        }
+        .btn-primary {
+            background: #3d2b1a;
+            color: #f5e7d9;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover { background: #5e3e2b; }
+        .btn-danger {
+            background: #c00;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-secondary {
+            background: #c9a45a;
+            color: #3d2b1a;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        .btn-warning {
+            background: #ff9800;
+            color: #3d2b1a;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .search-box {
+            padding: 0.5rem;
+            border: 2px solid #e0d0c0;
+            border-radius: 1rem;
+            flex: 1;
+        }
+        .filter-select {
+            padding: 0.5rem;
+            border: 2px solid #c9a45a;
+            border-radius: 1rem;
+        }
+        
+        .commanders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+        .commander-card {
+            background: #f5efe6;
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            border-left: 4px solid #c9a45a;
+            transition: transform 0.3s;
+        }
+        .commander-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .commander-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #c9a45a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .commander-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .commander-info {
+            flex: 1;
+        }
+        .commander-name {
+            font-weight: 700;
+            color: #3d2b1a;
+            font-size: 1rem;
+        }
+        .commander-details {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+        .commander-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .cadets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+        .cadet-card {
+            background: #f5efe6;
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            border-left: 4px solid #c9a45a;
+            transition: transform 0.3s;
+        }
+        .cadet-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .cadet-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #c9a45a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .cadet-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .cadet-info {
+            flex: 1;
+        }
+        .cadet-name {
+            font-weight: 700;
+            color: #3d2b1a;
+            font-size: 0.95rem;
+        }
+        .cadet-details {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+        .cadet-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            justify-content: center;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto;
+            display: block;
+        }
+        .data-table th, .data-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #e0d0c0;
+        }
+        .data-table th {
+            background: #f5efe6;
+            color: #3d2b1a;
+            font-weight: 700;
+        }
+        .data-table td {
+            word-break: break-word;
+        }
+        
+        .result-message {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            display: none;
+        }
+        .result-success { background: #d4edda; color: #155724; display: block; }
+        .result-error { background: #f8d7da; color: #721c24; display: block; }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            background: #3d2b1a;
+            color: #f5e7d9;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 { margin: 0; }
+        .modal-close {
+            background: none;
+            border: none;
+            color: #c9a45a;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        .modal-body { padding: 1.5rem; }
+        
+        .edit-form-group {
+            margin-bottom: 1rem;
+        }
+        .edit-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #3d2b1a;
+        }
+        .edit-form-group input, .edit-form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0d0c0;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+        }
+        .edit-form-group input:focus, .edit-form-group select:focus {
+            outline: none;
+            border-color: #c9a45a;
+        }
+        
+        .photo-upload {
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .current-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background: #f5efe6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid #c9a45a;
+        }
+        .current-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .current-photo .no-photo {
+            font-size: 3rem;
+        }
+        .upload-label {
+            background: #c9a45a;
+            color: #3d2b1a;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .photo-input {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .admin-header { flex-direction: column; gap: 0.5rem; text-align: center; }
+            .commanders-grid, .cadets-grid { grid-template-columns: 1fr; }
+            .data-table { font-size: 12px; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+    <div class="admin-header">
+        <h1>⚜️ Панель администратора | Росгвардия</h1>
+        <div>
+            <span class="user-info" id="adminName"></span>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Регистрация командира -->
+        <div class="section">
+            <h2 class="section-title">➕ Регистрация командира взвода</h2>
+            <div class="form-grid">
+                <input type="text" id="commanderName" placeholder="ФИО командира">
+                <input type="date" id="commanderBirthdate">
+                <input type="number" id="commanderPlatoon" placeholder="Номер взвода (1-20)" min="1" max="20">
+                <input type="text" id="commanderLogin" placeholder="Логин">
+                <input type="password" id="commanderPassword" placeholder="Пароль">
+            </div>
+            <button class="btn-primary" id="registerCommanderBtn">Зарегистрировать командира</button>
+            <div id="commanderResult" class="result-message"></div>
+        </div>
+        
+        <!-- Список командиров -->
+        <div class="section">
+            <h2 class="section-title">👨‍✈️ Командиры взводов</h2>
+            <div class="filters">
+                <input type="text" id="commanderSearch" placeholder="Поиск по ФИО или логину..." class="search-box">
+            </div>
+            <div id="commandersList" class="commanders-grid"></div>
+        </div>
+        
+        <!-- Список кадетов (карточки с фото) -->
+        <div class="section">
+            <h2 class="section-title">📚 Список кадетов</h2>
+            <div class="filters">
+                <select id="platoonFilter" class="filter-select">
+                    <option value="all">Все взводы</option>
+                </select>
+                <input type="text" id="cadetSearch" placeholder="Поиск по ФИО..." class="search-box">
+            </div>
+            <div id="cadetsList" class="cadets-grid"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования командира -->
+    <div class="modal" id="editCommanderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="editCommanderTitle">Редактирование командира</h3>
+                <button class="modal-close" onclick="closeEditCommanderModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="photo-upload">
+                    <div class="current-photo" id="commanderPhotoPreview">
+                        <div class="no-photo">👨‍✈️</div>
+                    </div>
+                    <label class="upload-label" for="commanderPhotoUpload">📸 Загрузить фото</label>
+                    <input type="file" id="commanderPhotoUpload" class="photo-input" accept="image/*">
+                </div>
+                
+                <div class="edit-form-group">
+                    <label>ФИО</label>
+                    <input type="text" id="editCommanderName" readonly style="background:#f0f0f0;">
+                </div>
+                <div class="edit-form-group">
+                    <label>Дата рождения</label>
+                    <input type="date" id="editCommanderBirthdate" readonly style="background:#f0f0f0;">
+                </div>
+                <div class="edit-form-group">
+                    <label>Номер взвода</label>
+                    <input type="number" id="editCommanderPlatoon" min="1" max="20">
+                </div>
+                <div class="edit-form-group">
+                    <label>Логин</label>
+                    <input type="text" id="editCommanderLogin" readonly style="background:#f0f0f0;">
+                </div>
+                <button class="btn-primary" id="saveCommanderChangesBtn" style="width:100%;">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования кадета -->
+    <div class="modal" id="editCadetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="editCadetTitle">Редактирование кадета</h3>
+                <button class="modal-close" onclick="closeEditCadetModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="photo-upload">
+                    <div class="current-photo" id="cadetPhotoPreview">
+                        <div class="no-photo">🎓</div>
+                    </div>
+                    <label class="upload-label" for="cadetPhotoUpload">📸 Загрузить фото</label>
+                    <input type="file" id="cadetPhotoUpload" class="photo-input" accept="image/*">
+                </div>
+                
+                <div class="edit-form-group">
+                    <label>ФИО</label>
+                    <input type="text" id="editCadetName" readonly style="background:#f0f0f0;">
+                </div>
+                <div class="edit-form-group">
+                    <label>Дата рождения</label>
+                    <input type="date" id="editCadetBirthdate" readonly style="background:#f0f0f0;">
+                </div>
+                <div class="edit-form-group">
+                    <label>Номер взвода</label>
+                    <input type="number" id="editCadetPlatoon" min="1" max="20">
+                </div>
+                <div class="edit-form-group">
+                    <label>Логин</label>
+                    <input type="text" id="editCadetLogin" readonly style="background:#f0f0f0;">
+                </div>
+                <button class="btn-primary" id="saveCadetChangesBtn" style="width:100%;">Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        let commanderPhotos = JSON.parse(localStorage.getItem('commanderPhotos') || '{}');
+        let cadetPhotos = JSON.parse(localStorage.getItem('cadetPhotos') || '{}');
+        let currentEditCommander = null;
+        let currentEditCadet = null;
+        
+        function saveCommanderPhotos() { localStorage.setItem('commanderPhotos', JSON.stringify(commanderPhotos)); }
+        function saveCadetPhotos() { localStorage.setItem('cadetPhotos', JSON.stringify(cadetPhotos)); }
+        function getAllCadets() { return JSON.parse(localStorage.getItem('cadets') || '[]'); }
+        
+        function getAllCommanders() {
+            const commanders = JSON.parse(localStorage.getItem('commanders') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            return [...users.filter(u => u.role === 'commander'), ...commanders];
+        }
+        
+        function deleteCommander(id, login) {
+            if (confirm(`Удалить командира "${login}"?`)) {
+                let commanders = JSON.parse(localStorage.getItem('commanders') || '[]');
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                users = users.filter(u => u.id !== id && u.login !== login);
+                commanders = commanders.filter(c => c.id !== id && c.login !== login);
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('commanders', JSON.stringify(commanders));
+                delete commanderPhotos[id];
+                saveCommanderPhotos();
+                renderCommandersList();
+                renderCadetsList();
+                showMessage('commanderResult', 'Командир удалён', 'success');
+            }
+        }
+        
+        function deleteCadet(id, name) {
+            if (confirm(`Удалить кадета "${name}"?`)) {
+                let cadets = getAllCadets().filter(c => c.id !== id);
+                localStorage.setItem('cadets', JSON.stringify(cadets));
+                delete cadetPhotos[id];
+                saveCadetPhotos();
+                renderCadetsList();
+                showMessage('commanderResult', 'Кадет удалён', 'success');
+            }
+        }
+        
+        // Загрузка фото для командира
+        function setupCommanderPhotoUpload() {
+            const photoInput = document.getElementById('commanderPhotoUpload');
+            if (photoInput) {
+                photoInput.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file && currentEditCommander) {
+                        const reader = new FileReader();
+                        reader.onload = function(ev) {
+                            commanderPhotos[currentEditCommander.id] = ev.target.result;
+                            saveCommanderPhotos();
+                            const preview = document.getElementById('commanderPhotoPreview');
+                            preview.innerHTML = `<img src="${ev.target.result}" alt="Фото">`;
+                            renderCommandersList();
+                            showMessage('commanderResult', 'Фото командира загружено!', 'success');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+            }
+        }
+        
+        // Загрузка фото для кадета
+        function setupCadetPhotoUpload() {
+            const photoInput = document.getElementById('cadetPhotoUpload');
+            if (photoInput) {
+                photoInput.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (file && currentEditCadet) {
+                        const reader = new FileReader();
+                        reader.onload = function(ev) {
+                            cadetPhotos[currentEditCadet.id] = ev.target.result;
+                            saveCadetPhotos();
+                            const preview = document.getElementById('cadetPhotoPreview');
+                            preview.innerHTML = `<img src="${ev.target.result}" alt="Фото">`;
+                            renderCadetsList();
+                            showMessage('commanderResult', 'Фото кадета загружено!', 'success');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+            }
+        }
+        
+        // Редактирование командира
+        function editCommander(commander) {
+            currentEditCommander = commander;
+            document.getElementById('editCommanderName').value = commander.name;
+            document.getElementById('editCommanderBirthdate').value = commander.birthdate || '';
+            document.getElementById('editCommanderPlatoon').value = commander.platoon;
+            document.getElementById('editCommanderLogin').value = commander.login;
+            
+            const photoUrl = commanderPhotos[commander.id];
+            const preview = document.getElementById('commanderPhotoPreview');
+            if (photoUrl) {
+                preview.innerHTML = `<img src="${photoUrl}" alt="Фото">`;
+            } else {
+                preview.innerHTML = '<div class="no-photo">👨‍✈️</div>';
+            }
+            
+            document.getElementById('editCommanderModal').classList.add('active');
+            setupCommanderPhotoUpload();
+        }
+        
+        function closeEditCommanderModal() {
+            document.getElementById('editCommanderModal').classList.remove('active');
+            currentEditCommander = null;
+        }
+        
+        function saveCommanderChanges() {
+            if (!currentEditCommander) return;
+            
+            const newPlatoon = parseInt(document.getElementById('editCommanderPlatoon').value);
+            if (newPlatoon < 1 || newPlatoon > 20) {
+                alert('Номер взвода должен быть от 1 до 20');
+                return;
+            }
+            
+            currentEditCommander.platoon = newPlatoon;
+            
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentEditCommander.id);
+            if (userIndex !== -1) {
+                users[userIndex].platoon = newPlatoon;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            let commanders = JSON.parse(localStorage.getItem('commanders') || '[]');
+            const commanderIndex = commanders.findIndex(c => c.id === currentEditCommander.id);
+            if (commanderIndex !== -1) {
+                commanders[commanderIndex].platoon = newPlatoon;
+                localStorage.setItem('commanders', JSON.stringify(commanders));
+            }
+            
+            showMessage('commanderResult', `Взвод командира изменён на ${newPlatoon}`, 'success');
+            
+            closeEditCommanderModal();
+            renderCommandersList();
+            renderCadetsList();
+        }
+        
+        // Редактирование кадета
+        function editCadet(cadet) {
+            currentEditCadet = cadet;
+            document.getElementById('editCadetName').value = cadet.name;
+            document.getElementById('editCadetBirthdate').value = cadet.birthdate;
+            document.getElementById('editCadetPlatoon').value = cadet.platoon;
+            document.getElementById('editCadetLogin').value = cadet.login;
+            
+            const photoUrl = cadetPhotos[cadet.id];
+            const preview = document.getElementById('cadetPhotoPreview');
+            if (photoUrl) {
+                preview.innerHTML = `<img src="${photoUrl}" alt="Фото">`;
+            } else {
+                preview.innerHTML = '<div class="no-photo">🎓</div>';
+            }
+            
+            document.getElementById('editCadetModal').classList.add('active');
+            setupCadetPhotoUpload();
+        }
+        
+        function closeEditCadetModal() {
+            document.getElementById('editCadetModal').classList.remove('active');
+            currentEditCadet = null;
+        }
+        
+        function saveCadetChanges() {
+            if (!currentEditCadet) return;
+            
+            const newPlatoon = parseInt(document.getElementById('editCadetPlatoon').value);
+            if (newPlatoon < 1 || newPlatoon > 20) {
+                alert('Номер взвода должен быть от 1 до 20');
+                return;
+            }
+            
+            let cadets = getAllCadets();
+            const index = cadets.findIndex(c => c.id === currentEditCadet.id);
+            if (index !== -1) {
+                cadets[index].platoon = newPlatoon;
+                localStorage.setItem('cadets', JSON.stringify(cadets));
+                showMessage('commanderResult', `Кадет ${currentEditCadet.name} перемещён в взвод ${newPlatoon}`, 'success');
+            }
+            
+            closeEditCadetModal();
+            renderCadetsList();
+            renderCommandersList();
+        }
+        
+        function renderCommandersList() {
+            const commanders = getAllCommanders();
+            const search = document.getElementById('commanderSearch').value.toLowerCase();
+            const filtered = commanders.filter(c => c.name.toLowerCase().includes(search) || c.login.toLowerCase().includes(search));
+            const container = document.getElementById('commandersList');
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center;">Нет зарегистрированных командиров</p>';
+                return;
+            }
+            container.innerHTML = filtered.map(c => {
+                const photoUrl = commanderPhotos[c.id] || '';
+                return `
+                    <div class="commander-card">
+                        <div class="commander-avatar">
+                            ${photoUrl ? `<img src="${photoUrl}" alt="${c.name}">` : `<span style="font-size: 2rem;">👨‍✈️</span>`}
+                        </div>
+                        <div class="commander-info">
+                            <div class="commander-name">${c.name}</div>
+                            <div class="commander-details">Взвод №${c.platoon} | ${c.birthdate || '—'}</div>
+                            <div class="commander-details">Логин: ${c.login}</div>
+                            <div class="commander-details">Последний вход: ${c.lastLogin ? new Date(c.lastLogin).toLocaleString() : 'никогда'}</div>
+                        </div>
+                        <div class="commander-actions">
+                            <button class="btn-warning" onclick='editCommander(${JSON.stringify(c)})'>✏️ Редактировать</button>
+                            <button class="btn-danger" onclick="deleteCommander(${c.id}, '${c.login}')">🗑️ Удалить</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderCadetsList() {
+            const cadets = getAllCadets();
+            const platoon = document.getElementById('platoonFilter').value;
+            const search = document.getElementById('cadetSearch').value.toLowerCase();
+            let filtered = cadets;
+            if (platoon !== 'all') filtered = filtered.filter(c => c.platoon === parseInt(platoon));
+            if (search) filtered = filtered.filter(c => c.name.toLowerCase().includes(search));
+            
+            const container = document.getElementById('cadetsList');
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center; padding: 2rem;">Нет кадетов</p>';
+                return;
+            }
+            
+            container.innerHTML = filtered.map(c => {
+                const photoUrl = cadetPhotos[c.id] || '';
+                return `
+                    <div class="cadet-card">
+                        <div class="cadet-avatar">
+                            ${photoUrl ? `<img src="${photoUrl}" alt="${c.name}">` : `<span style="font-size: 2rem;">🎓</span>`}
+                        </div>
+                        <div class="cadet-info">
+                            <div class="cadet-name">${c.name}</div>
+                            <div class="cadet-details">Взвод №${c.platoon} | ${c.birthdate || '—'}</div>
+                            <div class="cadet-details">Логин: ${c.login}</div>
+                            <div class="cadet-details">Регистрация: ${c.registeredAt ? new Date(c.registeredAt).toLocaleDateString() : '—'}</div>
+                        </div>
+                        <div class="cadet-actions">
+                            <button class="btn-warning" onclick='editCadet(${JSON.stringify(c)})'>✏️ Редактировать</button>
+                            <button class="btn-danger" onclick="deleteCadet(${c.id}, '${c.name}')">🗑️ Удалить</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function showMessage(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.className = `result-message result-${type}`;
+            setTimeout(() => { el.className = 'result-message'; }, 3000);
+        }
+        
+        function logout() { sessionStorage.removeItem('currentUser'); window.location.href = 'login.html'; }
+        
+        // Инициализация
+        document.getElementById('registerCommanderBtn').addEventListener('click', () => {
+            const name = document.getElementById('commanderName').value;
+            const birthdate = document.getElementById('commanderBirthdate').value;
+            const platoon = document.getElementById('commanderPlatoon').value;
+            const login = document.getElementById('commanderLogin').value;
+            const password = document.getElementById('commanderPassword').value;
+            if (!name || !birthdate || !platoon || !login || !password) {
+                showMessage('commanderResult', 'Заполните все поля', 'error');
+                return;
+            }
+            if (platoon < 1 || platoon > 20) {
+                showMessage('commanderResult', 'Взвод должен быть от 1 до 20', 'error');
+                return;
+            }
+            const result = registerCommander(name, birthdate, parseInt(platoon), login, password);
+            showMessage('commanderResult', result.message, result.success ? 'success' : 'error');
+            if (result.success) {
+                document.getElementById('commanderName').value = '';
+                document.getElementById('commanderBirthdate').value = '';
+                document.getElementById('commanderPlatoon').value = '';
+                document.getElementById('commanderLogin').value = '';
+                document.getElementById('commanderPassword').value = '';
+                renderCommandersList();
+                renderCadetsList();
+            }
+        });
+        
+        document.getElementById('saveCommanderChangesBtn').addEventListener('click', saveCommanderChanges);
+        document.getElementById('saveCadetChangesBtn').addEventListener('click', saveCadetChanges);
+        document.getElementById('commanderSearch').addEventListener('input', () => renderCommandersList());
+        document.getElementById('platoonFilter').addEventListener('change', () => renderCadetsList());
+        document.getElementById('cadetSearch').addEventListener('input', () => renderCadetsList());
+        
+        document.getElementById('editCommanderModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('editCommanderModal')) closeEditCommanderModal();
+        });
+        document.getElementById('editCadetModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('editCadetModal')) closeEditCadetModal();
+        });
+        
+        (function() {
+            const user = getCurrentUser();
+            if (!user || user.role !== 'admin') { window.location.href = 'login.html'; return; }
+            document.getElementById('adminName').textContent = user.name;
+            for (let i = 1; i <= 20; i++) {
+                document.getElementById('platoonFilter').innerHTML += `<option value="${i}">${i} взвод</option>`;
+            }
+            renderCommandersList();
+            renderCadetsList();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Росгвардия - мои горизонты | Курс занятий</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="course.css">
+    <style>
+        /* Дополнительные стили для hero-секции */
+        .course-hero {
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        .course-hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://rostov-gorod.ru/upload/medialibrary/6e5/6e5ee46b1c3feb3cfac320a0882473a4.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: 0;
+            opacity: 0.4;
+        }
+        .course-hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(136,0,0,0.7) 0%, rgba(68,0,0,0.8) 100%);
+        }
+        .course-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 24px;
+            color: white;
+            text-decoration: none;
+            font-family: 'Bitter', serif;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            transition: background 0.3s;
+            z-index: 2;
+        }
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .course-hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .course-hero-subtitle {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: #ffcc99;
+        }
+        .course-hero-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-badge {
+            background: #f5efe6;
+            color: #3d2b1a;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .logout-link {
+            color: #880000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link {
+            background: #880000;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .commander-nav {
+            background: #f5efe6;
+            padding: 10px 24px;
+            border-bottom: 2px solid #c9a45a;
+            text-align: center;
+            display: none;
+        }
+        .commander-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .commander-nav a:hover {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .course-hero-title { font-size: 1.8rem; }
+            .course-hero-subtitle { font-size: 1.3rem; }
+            .course-hero { min-height: 320px; }
+            .back-link { position: relative; top: 0; left: 0; display: inline-block; margin-bottom: 20px; }
+            .commander-nav a { display: inline-block; margin: 5px 10px; }
+            .user-header { flex-direction: column; gap: 10px; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <img src="assets/logo.png" alt="Логотип" class="site-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="site-logo" style="display: none; background: #880000; border-radius: 50%; width: 48px; height: 48px; align-items: center; justify-content: center; color: white; font-weight: bold;">⚜️</span>
+                <span class="site-title">Росгвардия - мои горизонты</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Единая модель профориентации</a></li>
+                    <li><a href="institutes.html">Институты ВНГ РФ</a></li>
+                    <li><a href="about.html">О проекте</a></li>
+                </ul>
+            </nav>
+            <div class="user-header" id="userHeader"></div>
+            <button class="mobile-menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <div class="commander-nav" id="commanderNav">
+        <a href="commander-platoon.html">👥 Мой взвод</a>
+        <a href="commander-stats.html">📊 Статистика</a>
+    </div>
+
+    <main>
+        <section class="course-hero">
+            <div class="course-hero-bg"></div>
+            <div class="container course-hero-content">
+                <a href="index.html" class="back-link">← На главную</a>
+                <h1 class="course-hero-title">Внеурочная деятельность</h1>
+                <h2 class="course-hero-subtitle">Курс занятий «Росгвардия — мои горизонты»</h2>
+                <p class="course-hero-description">Материалы для внеурочной деятельности</p>
+            </div>
+        </section>
+
+        <div class="year-switcher">
+            <div class="year-switcher-inner">
+                <a href="#" class="year-btn active" data-year="2025-2026">Учебный год 2025–2026</a>
+            </div>
+        </div>
+
+        <div class="course-sections-container">
+            <section class="month-section">
+                <div class="container">
+                    <h3 class="month-title">Сентябрь 2025</h3>
+                    <div class="lessons-list" id="september-lessons"></div>
+                </div>
+            </section>
+            <section class="month-section">
+                <div class="container">
+                    <h3 class="month-title">Октябрь 2025</h3>
+                    <div class="lessons-list" id="october-lessons"></div>
+                </div>
+            </section>
+            <section class="month-section">
+                <div class="container">
+                    <h3 class="month-title">Ноябрь 2025</h3>
+                    <div class="lessons-list" id="november-lessons"></div>
+                </div>
+            </section>
+            <section class="month-section">
+                <div class="container">
+                    <h3 class="month-title">Январь 2026</h3>
+                    <div class="lessons-list" id="january-lessons"></div>
+                </div>
+            </section>
+            <section class="month-section">
+                <div class="container">
+                    <h3 class="month-title">Февраль 2026</h3>
+                    <div class="lessons-list" id="february-lessons"></div>
+                </div>
+            </section>
+            <section class="month-section">
+                <div class="container">
+                    <h3 class="month-title">Март 2026</h3>
+                    <div class="lessons-list" id="march-lessons"></div>
+                </div>
+            </section>
+        </div>
+
+        <div class="materials-button-wrapper">
+            <button class="materials-btn" id="openMaterialsBtn">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    <line x1="12" y1="11" x2="12" y2="17"/>
+                    <line x1="9" y1="14" x2="15" y2="14"/>
+                </svg>
+                Материалы курса
+            </button>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo.png" alt="Логотип" style="width: 60px;">
+                    <p>Росгвардия - мои горизонты</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Главная</a>
+                    <a href="institutes.html">Институты ВНГ РФ</a>
+                    <a href="about.html">О проекте</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Росгвардия. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="fab-container">
+        <button class="fab-button" id="fabButton" aria-label="Действия">⚙️</button>
+        <div class="fab-menu" id="fabMenu">
+            <a href="#">Сайты Google</a>
+            <a href="#">Сообщить о нарушении</a>
+            <a href="#">Сведения о странице</a>
+        </div>
+    </div>
+
+    <div class="materials-modal" id="materialsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="modalTitle">Материалы "Росгвардия - мои горизонты"</h3>
+                <div class="modal-header-buttons">
+                    <button class="modal-back-btn" id="modalBackBtn" style="display: none;">← Назад к списку</button>
+                    <button class="modal-close-btn" id="modalCloseBtn">×</button>
+                </div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="course.js"></script>
+    <script>
+        function displayAuthInterface() {
+            const user = getCurrentUser();
+            const userHeader = document.getElementById('userHeader');
+            const commanderNav = document.getElementById('commanderNav');
+            
+            if (!user) {
+                userHeader.innerHTML = `<a href="login.html" class="login-link">Вход для сотрудников →</a>`;
+                if (commanderNav) commanderNav.style.display = 'none';
+                return;
+            }
+            
+            if (user.role === 'admin') {
+                window.location.href = 'admin-panel.html';
+                return;
+            }
+            
+            if (user.role === 'commander') {
+                userHeader.innerHTML = `
+                    <span class="user-badge">👨‍✈️ ${user.name} (взвод №${user.platoon})</span>
+                    <a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a>
+                `;
+                if (commanderNav) commanderNav.style.display = 'block';
+                return;
+            }
+            
+            if (user.role === 'cadet') {
+                userHeader.innerHTML = `
+                    <span class="user-badge">🎓 ${user.name} (взвод №${user.platoon})</span>
+                    <a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a>
+                `;
+                if (commanderNav) commanderNav.style.display = 'none';
+                return;
+            }
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+        
+        function setupFabMenu() {
+            const fabBtn = document.getElementById('fabButton');
+            const fabMenu = document.getElementById('fabMenu');
+            if (fabBtn && fabMenu) {
+                fabBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fabMenu.classList.toggle('active');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!fabBtn.contains(e.target) && !fabMenu.contains(e.target)) {
+                        fabMenu.classList.remove('active');
+                    }
+                });
+            }
+        }
+        
+        function setupMobileMenu() {
+            const toggleBtn = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.main-nav');
+            if (toggleBtn && nav) {
+                toggleBtn.addEventListener('click', () => {
+                    const isVisible = nav.style.display === 'flex';
+                    nav.style.display = isVisible ? 'none' : 'flex';
+                    if (!isVisible) {
+                        nav.style.flexDirection = 'column';
+                        nav.style.position = 'absolute';
+                        nav.style.top = '100%';
+                        nav.style.left = '0';
+                        nav.style.width = '100%';
+                        nav.style.backgroundColor = 'white';
+                        nav.style.padding = '20px';
+                        nav.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                        nav.style.zIndex = '999';
+                    }
+                });
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        nav.style.display = 'flex';
+                        nav.style.flexDirection = 'row';
+                        nav.style.position = 'static';
+                        nav.style.padding = '0';
+                        nav.style.boxShadow = 'none';
+                    }
+                });
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            displayAuthInterface();
+            setupFabMenu();
+            setupMobileMenu();
+        });
+    </script>
+</body>
+</html>

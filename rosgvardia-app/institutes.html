@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Росгвардия - мои горизонты | Институты ВНГ РФ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bitter:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные стили */
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-badge {
+            background: #f5efe6;
+            color: #3d2b1a;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .logout-link {
+            color: #880000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link {
+            background: #880000;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Меню командира */
+        .commander-nav {
+            background: #f5efe6;
+            padding: 10px 24px;
+            border-bottom: 2px solid #c9a45a;
+            text-align: center;
+            display: none;
+        }
+        .commander-nav a {
+            color: #3d2b1a;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .commander-nav a:hover {
+            background: #c9a45a;
+            color: white;
+        }
+        
+        /* Статистика на странице институтов */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-bottom: 4px solid #c9a45a;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #3d2b1a;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+        
+        .system-description {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #444;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .system-description h3 {
+            color: #3d2b1a;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #3d2b1a;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #c9a45a;
+            display: inline-block;
+        }
+        
+        .institutes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .institute-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border: 1px solid #e0d0c0;
+        }
+        .institute-card:hover {
+            transform: translateY(-5px);
+        }
+        .institute-logo {
+            background: #f5efe6;
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #c9a45a;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .institute-logo img {
+            max-width: 100%;
+            max-height: 80px;
+            object-fit: contain;
+        }
+        .institute-logo .logo-placeholder {
+            width: 70px;
+            height: 70px;
+            background: #3d2b1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .institute-logo .logo-placeholder span {
+            font-size: 2rem;
+            color: #f5e7d9;
+        }
+        .institute-info {
+            padding: 1.2rem;
+        }
+        .institute-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #3d2b1a;
+            margin-bottom: 0.3rem;
+        }
+        .institute-details {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        .institute-founded {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        .institute-science {
+            background: #f5efe6;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            font-size: 0.75rem;
+        }
+        .institute-faculties {
+            font-size: 0.75rem;
+            color: #555;
+            margin: 0.5rem 0;
+            padding-left: 0.5rem;
+            border-left: 3px solid #c9a45a;
+        }
+        .institute-link {
+            display: inline-block;
+            background: #3d2b1a;
+            color: #f5e7d9;
+            text-decoration: none;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .institute-link:hover {
+            background: #5e3e2b;
+        }
+        
+        .cadet-classes {
+            background: linear-gradient(135deg, #3d2b1a, #5e3e2b);
+            color: #f5e7d9;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .cadet-classes .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #c9a45a;
+        }
+        
+        @media (max-width: 768px) {
+            .institutes-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .commander-nav a { display: inline-block; margin: 5px 10px; }
+        }
+    </style>
+    <!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#880000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Росгвардия">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <img src="assets/logo.png" alt="Логотип" class="site-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="site-logo" style="display: none; background: #880000; border-radius: 50%; width: 48px; height: 48px; align-items: center; justify-content: center; color: white; font-weight: bold;">⚜️</span>
+                <span class="site-title">Росгвардия - мои горизонты</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Единая модель профориентации</a></li>
+                    <li><a href="institutes.html" class="active">Институты ВНГ РФ</a></li>
+                    <li><a href="about.html">О проекте</a></li>
+                </ul>
+            </nav>
+            <div class="user-header" id="userHeader"></div>
+            <button class="mobile-menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <!-- Дополнительная навигация для командира -->
+    <div class="commander-nav" id="commanderNav">
+        <a href="commander-platoon.html">👥 Мой взвод</a>
+        <a href="commander-stats.html">📊 Статистика</a>
+         <a href="commander-chat.html">💬 Чат</a>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="page-header" style="text-align: center; margin: 2rem 0;">
+                <h1 class="page-title" style="color: #3d2b1a; font-size: 2rem;">⚡ Образовательные организации войск национальной гвардии Российской Федерации</h1>
+                <p class="page-description" style="color: #666;">Система подготовки кадров для войск правопорядка</p>
+            </div>
+            
+            <!-- Статистика -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Высшие учебные заведения</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Кадетские училища</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">60+</div>
+                    <div class="stat-label">Кадетских классов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">924</div>
+                    <div class="stat-label">Партнерские организации</div>
+                </div>
+            </div>
+            
+            <!-- Описание системы -->
+            <div class="system-description">
+                <h3>🎓 Образовательная система войск национальной гвардии</h3>
+                <p>Для реализации государственной политики в области подготовки кадров, выстраивания системы непрерывного образования и методического сопровождения образовательных программ сформировано управление образования.</p>
+                <p>Росгвардия взыскательно относится к подбору кадров, но одновременно открывает широкие возможности для профессионального роста тем, кто способен проявить себя на службе умелым воином, квалифицированным специалистом и надежным человеком.</p>
+                <p>В войсках национальной гвардии действуют четыре образовательные организации – Военная ордена Жукова академия войск национальной гвардии Российской Федерации, Новосибирский военный ордена Жукова институт имени генерала армии И.К. Яковлева, Пермский военный институт, Саратовский военный ордена Жукова Краснознаменный институт.</p>
+                <p>В образовательной системе войск функционируют Пермское президентское кадетское училище имени Героя России Ф.В. Кузьмина и Московское президентское кадетское училище имени М.А. Шолохова войск национальной гвардии Российской Федерации.</p>
+            </div>
+            
+            <!-- Военная академия и институты -->
+            <h2 class="section-title">🏛️ Военная академия и институты</h2>
+            <div class="institutes-grid" id="institutesGrid"></div>
+            
+            <!-- Кадетские училища -->
+            <h2 class="section-title">🏫 Президентские кадетские училища</h2>
+            <div class="institutes-grid" id="cadetSchoolsGrid"></div>
+            
+            <!-- Дополнительная информация -->
+            <div class="cadet-classes">
+                <h3>📊 Взаимодействие с образовательными организациями</h3>
+                <p>Росгвардия взаимодействует в стране с <span class="number">924</span> образовательными организациями разных типов и уровней образования.</p>
+                <p>Право называться росгвардейскими заслужили более <span class="number">60</span> кадетских классов.</p>
+            </div>
+            
+            <div class="system-description">
+                <h3>🏅 Подготовка высшего командного состава</h3>
+                <p>Значительное число старших и высших офицеров Росгвардии прошли обучение в Военной академии Генерального штаба Вооруженных Сил Российской Федерации.</p>
+                <h3 style="margin-top: 1rem;">🤝 Военно-шефская работа</h3>
+                <p>С учетом поставленной руководством Росгвардии задачи по максимальному охвату подрастающего поколения участием в жизни и деятельности войск во всех регионах России организована военно-шефская работа с образовательными и общественными организациями, региональными центрами патриотического воспитания молодежи, созданными при органах государственной власти субъектов Российской Федерации.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="simple-footer">
+        <div class="container">
+            <div class="simple-footer-content">
+                <div class="simple-footer-copyright">
+                    <p>© 2026 Росгвардия. Все права защищены.</p>
+                </div>
+                <div class="simple-footer-links">
+                    <a href="index.html">Главная</a>
+                    <a href="institutes.html">Институты ВНГ РФ</a>
+                    <a href="about.html">О проекте</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="fab-container">
+        <button class="fab-button" id="fabButton" aria-label="Действия">⚙️</button>
+        <div class="fab-menu" id="fabMenu">
+            <a href="#">Сайты Google</a>
+            <a href="#">Сообщить о нарушении</a>
+            <a href="#">Сведения о странице</a>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Данные высших учебных заведений
+        const higherInstitutes = [
+            { 
+                name: "Военная академия", 
+                fullName: "Военная ордена Жукова академия войск национальной гвардии Российской Федерации",
+                location: "Санкт-Петербург",
+                founded: "12 октября 1944 года",
+                logoUrl: "https://fabrikanagrad.ru/upload/iblock/2f0/лого_mini.png",
+                logoPlaceholder: "🏛️",
+                doctors: 46,
+                candidates: 91,
+                professors: 30,
+                docents: 41,
+                faculties: [
+                    { name: "Факультет (командный)", specialty: "Правовое обеспечение национальной безопасности", qualification: "юрист" },
+                    { name: "Факультет (военно-политической работы)", specialty: "Военно-политическая работа", qualification: "специалист, преподаватель" },
+                    { name: "Факультет (командно-артиллерийский)", specialty: "Стрелково-пушечное, артиллерийское и ракетное оружие", qualification: "инженер" }
+                ],
+                link: "https://academy.rosguard.gov.ru"
+            },
+            { 
+                name: "Новосибирский военный институт", 
+                fullName: "Новосибирский военный ордена Жукова институт имени генерала армии И.К. Яковлева войск национальной гвардии Российской Федерации",
+                location: "Новосибирск",
+                founded: "2 марта 1971 года",
+                logoUrl: "https://nvi.rosguard.gov.ru/uploads/2022/02/ehmblema.png",
+                logoPlaceholder: "⚔️",
+                doctors: 18,
+                candidates: 100,
+                professors: 8,
+                docents: 82,
+                faculties: [
+                    { name: "Курсантский батальон", specialty: "Правовое обеспечение национальной безопасности", qualification: "юрист" },
+                    { name: "Факультет сил специального назначения", specialty: "Перевод и переводоведение", qualification: "переводчик" }
+                ],
+                link: "https://nvi.rosguard.gov.ru"
+            },
+            { 
+                name: "Пермский военный институт", 
+                fullName: "Пермский военный институт войск национальной гвардии Российской Федерации",
+                location: "Пермь",
+                founded: "7 ноября 1981 года",
+                logoUrl: "https://e-ecolog.ru/docs_files/l8WOfNoeOPC7db-DWN7eR.jpg",
+                logoPlaceholder: "⚔️",
+                doctors: 16,
+                candidates: 97,
+                professors: 11,
+                docents: 69,
+                faculties: [
+                    { name: "Факультет (технического обеспечения)", specialty: "Транспортные средства специального назначения", qualification: "инженер" },
+                    { name: "Факультет (ракетно-артиллерийского вооружения)", specialty: "Стрелково-пушечное артиллерийское и ракетное оружие", qualification: "инженер" }
+                ],
+                link: "https://pvi.rosguard.gov.ru"
+            },
+            { 
+                name: "Саратовский военный институт", 
+                fullName: "Саратовский военный ордена Жукова Краснознаменный институт войск национальной гвардии Российской Федерации",
+                location: "Саратов",
+                founded: "19 мая 1932 года",
+                logoUrl: "https://pvi.rosguard.gov.ru/uploads/2021/08/sarat.png",
+                logoPlaceholder: "⚔️",
+                doctors: 13,
+                candidates: 75,
+                professors: 14,
+                docents: 54,
+                faculties: [
+                    { name: "Курсантский батальон", specialty: "Правовое обеспечение национальной безопасности", qualification: "юрист" }
+                ],
+                link: "https://svki.rosguard.gov.ru"
+            }
+        ];
+        
+        // Данные кадетских училищ
+        const cadetSchools = [
+            { 
+                name: "Пермское президентское кадетское училище", 
+                fullName: "Пермское президентское кадетское училище имени Героя России Ф. Кузьмина войск национальной гвардии Российской Федерации",
+                location: "Пермь",
+                logoUrl: "https://ppku.rosguard.gov.ru/uploads/2026/02/30logosolid00000.png",
+                logoPlaceholder: "🎓",
+                link: "https://rosguard.gov.ru/page/index/federalnoe-gosudarstvennoe-kaznnoe-obshheobrazovatelnoe-uchrezhdenie-permskoe-prezidentskoe-kadetskoe-uchilishhe-imeni-geroya-rossii-f-kuzmina-vojsk-n"
+            },
+            { 
+                name: "Московское президентское кадетское училище", 
+                fullName: "Московское президентское кадетское училище имени М.А. Шолохова войск национальной гвардии Российской Федерации",
+                location: "Москва",
+                logoUrl: "https://mkkb.ru/wp-content/uploads/2023/10/logotip-s-mpku-vng-rf.png",
+                logoPlaceholder: "🎓",
+                link: "https://rosguard.gov.ru/ru/page/index/federalnoe-gosudarstvennoe-kazennoe-obshheobrazovatelnoe-uchrezhdenie-moskovskoe-prezidentskoe-kadetskoe-uchilishhe-imeni-ma-sholoxova-vojsk-nacionaln"
+            }
+        ];
+        
+        function renderInstituteCard(inst, isCadetSchool = false) {
+            if (isCadetSchool) {
+                return `
+                    <div class="institute-card">
+                        <div class="institute-logo">
+                            ${inst.logoUrl ? 
+                                `<img src="${inst.logoUrl}" alt="${inst.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'logo-placeholder\'><span>${inst.logoPlaceholder}</span></div>'">` : 
+                                `<div class="logo-placeholder"><span>${inst.logoPlaceholder}</span></div>`
+                            }
+                        </div>
+                        <div class="institute-info">
+                            <div class="institute-name">${inst.name}</div>
+                            <div class="institute-details">📍 ${inst.location}</div>
+                            <div class="institute-founded">Президентское кадетское училище</div>
+                            <a href="${inst.link}" target="_blank" class="institute-link">Подробнее →</a>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let facultiesHtml = '';
+            inst.faculties.forEach(f => {
+                facultiesHtml += `<div class="institute-faculties"><strong>${f.name}</strong><br>${f.specialty}<br>Квалификация: ${f.qualification}</div>`;
+            });
+            
+            return `
+                <div class="institute-card">
+                    <div class="institute-logo">
+                        ${inst.logoUrl ? 
+                            `<img src="${inst.logoUrl}" alt="${inst.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'logo-placeholder\'><span>${inst.logoPlaceholder}</span></div>'">` : 
+                            `<div class="logo-placeholder"><span>${inst.logoPlaceholder}</span></div>`
+                        }
+                    </div>
+                    <div class="institute-info">
+                        <div class="institute-name">${inst.name}</div>
+                        <div class="institute-details">📍 ${inst.location}</div>
+                        <div class="institute-founded">Основан: ${inst.founded}</div>
+                        <div class="institute-science">
+                            🎓 Научный потенциал: ${inst.doctors} докторов наук, ${inst.candidates} кандидатов наук<br>
+                            👨‍🏫 ${inst.professors} профессоров, ${inst.docents} доцентов
+                        </div>
+                        ${facultiesHtml}
+                        <a href="${inst.link}" target="_blank" class="institute-link">Официальный сайт →</a>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderInstitutes() {
+            const institutesGrid = document.getElementById('institutesGrid');
+            const cadetSchoolsGrid = document.getElementById('cadetSchoolsGrid');
+            if (institutesGrid) institutesGrid.innerHTML = higherInstitutes.map(inst => renderInstituteCard(inst, false)).join('');
+            if (cadetSchoolsGrid) cadetSchoolsGrid.innerHTML = cadetSchools.map(inst => renderInstituteCard(inst, true)).join('');
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+        
+        function displayAuthInterface() {
+            const user = getCurrentUser();
+            const userHeader = document.getElementById('userHeader');
+            const commanderNav = document.getElementById('commanderNav');
+            
+            if (!user) {
+                userHeader.innerHTML = `<a href="login.html" class="login-link">Вход для сотрудников →</a>`;
+                if (commanderNav) commanderNav.style.display = 'none';
+                return;
+            }
+            
+            if (user.role === 'admin') {
+                window.location.href = 'admin-panel.html';
+                return;
+            }
+            
+            if (user.role === 'commander') {
+                userHeader.innerHTML = `
+                    <span class="user-badge">👨‍✈️ ${user.name} (взвод №${user.platoon})</span>
+                    <a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a>
+                `;
+                if (commanderNav) commanderNav.style.display = 'block';
+                return;
+            }
+            
+            if (user.role === 'cadet') {
+                userHeader.innerHTML = `
+                    <span class="user-badge">🎓 ${user.name} (взвод №${user.platoon})</span>
+                    <a href="#" onclick="logout(); return false;" class="logout-link">Выйти</a>
+                `;
+                if (commanderNav) commanderNav.style.display = 'none';
+                return;
+            }
+        }
+        
+        function setupFabMenu() {
+            const fabBtn = document.getElementById('fabButton');
+            const fabMenu = document.getElementById('fabMenu');
+            if (fabBtn && fabMenu) {
+                fabBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fabMenu.classList.toggle('active');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!fabBtn.contains(e.target) && !fabMenu.contains(e.target)) {
+                        fabMenu.classList.remove('active');
+                    }
+                });
+            }
+        }
+        
+        function setupMobileMenu() {
+            const toggleBtn = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.main-nav');
+            if (toggleBtn && nav) {
+                toggleBtn.addEventListener('click', () => {
+                    const isVisible = nav.style.display === 'flex';
+                    nav.style.display = isVisible ? 'none' : 'flex';
+                    if (!isVisible) {
+                        nav.style.flexDirection = 'column';
+                        nav.style.position = 'absolute';
+                        nav.style.top = '100%';
+                        nav.style.left = '0';
+                        nav.style.width = '100%';
+                        nav.style.backgroundColor = 'white';
+                        nav.style.padding = '20px';
+                        nav.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                        nav.style.zIndex = '999';
+                    }
+                });
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        nav.style.display = 'flex';
+                        nav.style.flexDirection = 'row';
+                        nav.style.position = 'static';
+                        nav.style.padding = '0';
+                        nav.style.boxShadow = 'none';
+                    }
+                });
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            displayAuthInterface();
+            renderInstitutes();
+            setupFabMenu();
+            setupMobileMenu();
+        });
+        // ========== СЧЕТЧИК СООБЩЕНИЙ ДЛЯ КОМАНДИРА ==========
+function updateChatBadge() {
+    var user = getCurrentUser();
+    if (!user || user.role !== 'commander') return;
+    
+    var unreadCount = typeof getTotalUnreadCount === 'function' ? getTotalUnreadCount(user.id) : 0;
+    var commanderNav = document.getElementById('commanderNav');
+    
+    if (commanderNav) {
+        var chatLink = commanderNav.querySelector('a[href="commander-chat.html"]');
+        if (chatLink) {
+            var oldBadge = chatLink.querySelector('.chat-badge');
+            if (oldBadge) oldBadge.remove();
+            if (unreadCount > 0) {
+                var badge = document.createElement('span');
+                badge.className = 'chat-badge';
+                badge.style.cssText = 'background: #c00; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; margin-left: 8px; font-weight: bold;';
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                chatLink.appendChild(badge);
+            }
+        }
+    }
+}
+
+// Слушаем изменения в localStorage (мгновенная синхронизация между вкладками)
+window.addEventListener('storage', function(e) {
+    if (e.key === 'chatMessagesUpdated' || e.key === 'chatMessages') {
+        updateChatBadge();
+    }
+});
+
+// Запускаем обновление счетчика
+if (typeof getCurrentUser === 'function') {
+    updateChatBadge();
+}
+    </script>
+</body>
+</html>

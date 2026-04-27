@@ -1,0 +1,1423 @@
+/* topic.css - стили для страниц тем занятий (как на оригинальном сайте) */
+
+/* Основные переменные */
+:root {
+    --rosgvardia-red: #880000;
+    --rosgvardia-dark-red: #5e2b1a;
+    --rosgvardia-gold: #c9a45a;
+    --rosgvardia-bg-dark: #1f2a3f;
+    --rosgvardia-bg-light: #2d363f;
+    --rosgvardia-text: #e0e5f0;
+    --rosgvardia-text-light: #f5e7d9;
+}
+
+/* Hero секция темы */
+.topic-hero-section {
+    background: linear-gradient(135deg, #1a2e3f 0%, #0d1a24 100%);
+    min-height: auto;
+    padding: 40px 0 30px;
+    position: relative;
+}
+
+.topic-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--rosgvardia-gold);
+    text-decoration: none;
+    font-family: 'Bitter', serif;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+}
+
+.topic-back-link:hover {
+    color: white;
+}
+
+.topic-header-card {
+    background: linear-gradient(145deg, var(--rosgvardia-dark-red) 0%, var(--rosgvardia-red) 100%);
+    border: 2px solid var(--rosgvardia-gold);
+    border-radius: 30px 30px 0 0;
+    padding: 30px;
+}
+
+.topic-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--rosgvardia-text-light);
+    margin-bottom: 15px;
+    line-height: 1.3;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.topic-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.topic-meta span {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    padding: 5px 15px;
+    border-radius: 30px;
+    border: 1px solid var(--rosgvardia-gold);
+    color: var(--rosgvardia-text-light);
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Основной контент */
+.topic-content-card {
+    background: var(--rosgvardia-bg-dark);
+    border: 2px solid var(--rosgvardia-gold);
+    border-top: none;
+    border-radius: 0 0 30px 30px;
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+/* Секции */
+.topic-section {
+    margin-bottom: 35px;
+}
+
+.topic-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--rosgvardia-gold);
+    padding-bottom: 12px;
+}
+
+.topic-section-icon {
+    width: 45px;
+    height: 45px;
+    background: var(--rosgvardia-dark-red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 8px var(--rosgvardia-gold);
+}
+
+.topic-section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--rosgvardia-text-light);
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Слайд-нумерация */
+.slide-numbers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.slide-number {
+    background: var(--rosgvardia-dark-red);
+    color: var(--rosgvardia-text-light);
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    border: 1px solid var(--rosgvardia-gold);
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Блок командира */
+.commander-block {
+    background: var(--rosgvardia-bg-light);
+    border-radius: 24px;
+    padding: 20px 25px;
+    border-left: 5px solid var(--rosgvardia-gold);
+    margin: 15px 0;
+}
+
+.commander-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--rosgvardia-text);
+    font-family: 'Roboto', sans-serif;
+}
+
+.commander-text strong {
+    color: var(--rosgvardia-gold);
+}
+
+.commander-text em {
+    background: #3a4a3a;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-style: italic;
+    display: inline-block;
+}
+
+.commander-text ul,
+.commander-text ol {
+    margin-left: 20px;
+    margin-top: 12px;
+}
+
+.commander-text li {
+    margin: 8px 0;
+}
+
+/* Видео блок */
+.video-block {
+    background: var(--rosgvardia-dark-red);
+    border-radius: 24px;
+    padding: 20px;
+    margin: 25px 0;
+    text-align: center;
+    border: 2px solid var(--rosgvardia-gold);
+}
+
+.video-title {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: var(--rosgvardia-text-light);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Раздаточный материал */
+.handout-block {
+    background: var(--rosgvardia-bg-light);
+    border-radius: 24px;
+    padding: 25px;
+    margin: 20px 0;
+    border: 3px solid var(--rosgvardia-gold);
+}
+
+.handout-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--rosgvardia-text-light);
+    text-align: center;
+    margin-bottom: 18px;
+    border-bottom: 2px solid var(--rosgvardia-gold);
+    padding-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.handout-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.handout-card {
+    background: var(--rosgvardia-bg-dark);
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid var(--rosgvardia-gold);
+}
+
+.handout-card p {
+    margin: 8px 0;
+    color: var(--rosgvardia-text);
+    font-size: 14px;
+}
+
+.handout-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.handout-list li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    color: var(--rosgvardia-text);
+    font-size: 14px;
+}
+
+.handout-list li::before {
+    content: '⚡';
+    position: absolute;
+    left: 0;
+    color: var(--rosgvardia-gold);
+}
+
+.handout-devis {
+    background: var(--rosgvardia-dark-red);
+    border-radius: 30px;
+    padding: 6px 18px;
+    display: inline-block;
+    margin-top: 12px;
+    font-weight: 700;
+    border: 1px solid var(--rosgvardia-gold);
+    font-size: 14px;
+}
+
+/* Качества (бейджики) */
+.qualities-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.quality-badge {
+    background: var(--rosgvardia-dark-red);
+    color: var(--rosgvardia-text-light);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    border: 1px solid var(--rosgvardia-gold);
+    font-size: 13px;
+}
+
+/* Вопросы */
+.questions-block {
+    background: var(--rosgvardia-bg-light);
+    border-radius: 24px;
+    padding: 20px;
+    margin: 20px 0;
+    border: 2px dashed var(--rosgvardia-gold);
+}
+
+.question-item {
+    margin: 12px 0;
+    padding: 8px 0 8px 18px;
+    border-left: 3px solid var(--rosgvardia-gold);
+    color: var(--rosgvardia-text);
+    font-size: 14px;
+}
+
+.question-item strong {
+    color: var(--rosgvardia-gold);
+}
+
+/* Материалы курса кнопка */
+.materials-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 20px;
+}
+
+.materials-topic-btn {
+    background: var(--rosgvardia-dark-red);
+    border: 2px solid var(--rosgvardia-gold);
+    color: var(--rosgvardia-text-light);
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+    font-family: 'Bitter', serif;
+}
+
+.materials-topic-btn:hover {
+    background: var(--rosgvardia-red);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(139, 0, 0, 0.4);
+}
+
+.materials-topic-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+/* Модальное окно для материалов */
+.topic-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.topic-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.topic-modal-content {
+    background: var(--rosgvardia-bg-dark);
+    border: 3px solid var(--rosgvardia-gold);
+    border-radius: 30px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.topic-modal.active .topic-modal-content {
+    transform: scale(1);
+}
+
+.topic-modal-header {
+    background: var(--rosgvardia-dark-red);
+    padding: 18px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--rosgvardia-gold);
+}
+
+.topic-modal-header h3 {
+    color: var(--rosgvardia-text-light);
+    font-size: 18px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.topic-modal-close {
+    background: none;
+    border: none;
+    color: var(--rosgvardia-gold);
+    font-size: 28px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.topic-modal-close:hover {
+    color: white;
+}
+
+.topic-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(80vh - 80px);
+}
+
+/* Список файлов */
+.topic-files-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.topic-file-item {
+    background: var(--rosgvardia-bg-light);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-left: 4px solid var(--rosgvardia-gold);
+}
+
+.topic-file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.topic-file-icon {
+    font-size: 24px;
+}
+
+.topic-file-name {
+    font-weight: 600;
+    color: var(--rosgvardia-text-light);
+    font-size: 13px;
+}
+
+.topic-file-btn {
+    background: var(--rosgvardia-dark-red);
+    color: white;
+    border: 1px solid var(--rosgvardia-gold);
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.topic-file-btn:hover {
+    background: var(--rosgvardia-red);
+}
+
+.topic-file-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2;
+}
+
+/* ========== СТИЛИ ДЛЯ ТЕМЫ 2 (исправленные цвета текста) ========== */
+
+.topic2-hero {
+    background: #2d2a24;
+}
+
+.topic2-header {
+    background: linear-gradient(145deg, #3d2b1a 0%, #5e3e2b 100%);
+}
+
+.topic2-header .topic-title {
+    color: #f5e7d9;
+}
+
+.topic2-commander {
+    background: #2d2822;
+    border-left: 6px solid #c9a45a;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+}
+
+.topic2-commander .commander-text {
+    color: #e0dcd5;
+}
+
+.topic2-commander .commander-text strong {
+    color: #d9b87a;
+}
+
+.topic2-commander .commander-text em {
+    color: #b0c0a0;
+    background: #2e3a2a;
+}
+
+/* Портрет */
+.portrait-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.portrait-image {
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    border-radius: 1.5rem;
+    border: 4px solid #c9a45a;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    background: #3d2b1a;
+    padding: 0.5rem;
+}
+
+.portrait-caption {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.portrait-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #c9a45a;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.portrait-years {
+    font-size: 0.9rem;
+    color: #e0dcd5;
+    font-family: 'Roboto', sans-serif;
+}
+
+.portrait-title {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #d9b87a;
+    font-family: 'Bitter', serif;
+}
+
+/* Двойные слайды */
+.double-slide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem;
+    margin: 1.2rem 0;
+}
+
+.double-slide-card {
+    background: #2d2822;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
+    border: 2px solid #c9a45a;
+}
+
+.double-slide-card p {
+    color: #e0dcd5;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.slide-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #c9a45a;
+    margin-bottom: 0.8rem;
+}
+
+/* Подзаголовки */
+.topic-subtitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #d9b87a;
+    margin: 1.5rem 0 1rem;
+    border-left: 5px solid #c9a45a;
+    padding-left: 1rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Трагический блок */
+.tragedy-block {
+    background: #2d2822;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    border: 2px solid #c9a45a;
+}
+
+.tragedy-content {
+    background: #3d2b1a;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    text-align: center;
+}
+
+.tragedy-content p {
+    color: #e0dcd5;
+}
+
+.tragedy-text {
+    margin-top: 0.8rem;
+    font-weight: 700;
+    color: #d9b87a;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Блок уроков */
+.lessons-block {
+    background: #2d2822;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    border: 2px solid #c9a45a;
+}
+
+.lessons-block p {
+    color: #e0dcd5;
+}
+
+.lesson-question {
+    margin: 1rem 0;
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-left: 3px solid #c9a45a;
+}
+
+.lesson-question strong {
+    color: #c9a45a;
+}
+
+.lesson-question em {
+    color: #b0c0a0;
+    font-style: italic;
+}
+
+/* Бейджики качеств */
+.topic2-qualities .quality-badge {
+    background: #3d2b1a;
+    color: #e9d6b5;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #c9a45a;
+    font-size: 0.8rem;
+}
+
+/* Раздаточный материал */
+.topic2-handout {
+    background: #2d2822;
+    border: 3px solid #c9a45a;
+    border-radius: 1.5rem;
+}
+
+.handout-title {
+    color: #e9d6b5;
+}
+
+.handout-list li {
+    color: #e0dcd5;
+}
+
+.handout-quote {
+    background: #1f1c18;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+    font-style: italic;
+    border: 2px dashed #c9a45a;
+    color: #d9b87a;
+}
+
+/* Практическое задание */
+.task-block {
+    background: #2d2822;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    border: 2px dashed #c9a45a;
+}
+
+.task-item {
+    color: #e0dcd5;
+}
+
+.task-item strong {
+    color: #c9a45a;
+}
+
+/* Рефлексия */
+.topic2-reflection {
+    background: #2d2822;
+    border-left: 6px solid #c9a45a;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
+}
+
+.topic2-reflection p {
+    color: #e0dcd5;
+}
+
+.topic2-reflection strong {
+    color: #d9b87a;
+}
+
+.topic2-reflection em {
+    color: #b0c0a0;
+}
+
+/* Заключение командира */
+.commander-closing {
+    background: #3d2b1a;
+    margin-top: 1rem;
+}
+
+.commander-closing .commander-text {
+    color: #e0dcd5;
+}
+
+.commander-closing .commander-text strong {
+    color: #d9b87a;
+}
+/* ========== СТИЛИ ДЛЯ ТЕМЫ 3 (Инженерные войска) ========== */
+
+.topic3-hero {
+    background: linear-gradient(135deg, #2b4a3d 0%, #1a2e24 100%);
+}
+
+.topic3-header {
+    background: linear-gradient(145deg, #1d3b2a 0%, #345e40 100%);
+}
+
+.topic3-card {
+    background: #1f3a2c;
+}
+
+.topic3-commander {
+    background: #26432e;
+    border-left-color: #b9a063;
+}
+
+.topic3-commander .commander-text {
+    color: #e0e5e0;
+}
+
+.topic3-commander .commander-text strong {
+    color: #d9c88a;
+}
+
+.topic3-commander .commander-text em {
+    background: #1e3f2a;
+    color: #c0d9b5;
+}
+
+.topic3-video {
+    background: #1d3b2a;
+    border-color: #b9a063;
+}
+
+.topic3-slide {
+    background: #26432e;
+    border-color: #b9a063;
+}
+
+.topic3-guest {
+    background: #26432e;
+    border: 3px solid #b9a063;
+    border-left: 10px solid #b9a063;
+}
+
+.pvi-link {
+    display: inline-block;
+    background: #26432e;
+    padding: 0.8rem 1.5rem;
+    border-radius: 3rem;
+    border: 1px solid #b9a063;
+    color: #e8dbb5;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.pvi-link:hover {
+    background: #345e40;
+}
+
+.specialty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+}
+
+.specialty-card {
+    background: #1f3a2c;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
+    border: 1px solid #b9a063;
+    text-align: center;
+}
+
+.specialty-title {
+    font-weight: 700;
+    color: #e8dbb5;
+    margin-bottom: 0.5rem;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.benefit-item {
+    background: #1f3a2c;
+    border-radius: 1rem;
+    padding: 1rem;
+    border: 1px solid #b9a063;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #e0e5e0;
+}
+
+.benefit-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.conclusion-block {
+    background: #1f3a2c;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    border: 2px dashed #b9a063;
+    color: #e0e5e0;
+}
+
+.call-to-action {
+    background: #1d3b2a;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 2px solid #b9a063;
+    text-align: center;
+}
+
+.action-link {
+    display: inline-block;
+    background: #1d3b2a;
+    border: 2px solid #b9a063;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 3rem;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.action-link:hover {
+    background: #345e40;
+    transform: translateY(-2px);
+}
+
+.topic3-action {
+    background: #1d3b2a;
+    border-color: #b9a063;
+}
+
+/* ========== СТИЛИ ДЛЯ ТЕМЫ 4 (Атомная отрасль) ========== */
+
+.topic4-hero {
+    background: linear-gradient(135deg, #0a1525 0%, #051020 100%);
+}
+
+.topic4-header {
+    background: linear-gradient(145deg, #022b49 0%, #0a3f62 100%);
+}
+
+.topic4-card {
+    background: #112b3f;
+}
+
+.topic4-commander {
+    background: #1d3649;
+    border-left-color: #6ab0e6;
+}
+
+.topic4-commander .commander-text {
+    color: #e0edf5;
+}
+
+.topic4-commander .commander-text strong {
+    color: #9ac9ff;
+}
+
+.topic4-commander .commander-text em {
+    background: #1f3f57;
+    color: #c9e2ff;
+}
+
+.topic4-video {
+    background: #022b49;
+    border-color: #6ab0e6;
+}
+
+.topic4-slide {
+    background: #1d3649;
+    border-color: #6ab0e6;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.item-card {
+    background: #1d3649;
+    border: 1px solid #6ab0e6;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #e0edf5;
+}
+
+.item-card.yes {
+    border-left: 5px solid #4caf50;
+}
+
+.item-card.no {
+    border-left: 5px solid #f44336;
+    opacity: 0.8;
+}
+
+.ranks-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+.rank-card {
+    background: #022b49;
+    border: 2px solid #6ab0e6;
+    border-radius: 2rem;
+    padding: 0.8rem 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    color: #b5dcff;
+}
+
+.rank-card span {
+    font-size: 0.9rem;
+    color: #9ac9ff;
+    display: block;
+}
+
+.clap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.clap-item {
+    background: #1d3649;
+    border-radius: 1rem;
+    padding: 1rem;
+    border: 1px solid #6ab0e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.clap-label {
+    font-weight: 600;
+    color: #e0edf5;
+}
+
+.clap-answer {
+    background: #022b49;
+    padding: 0.2rem 0.8rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    color: #b5dcff;
+}
+
+.fill-text {
+    background: #0f2a3b;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    line-height: 1.8;
+    border: 2px dashed #6ab0e6;
+    margin: 1rem 0;
+    color: #e0edf5;
+}
+
+.fill-text u {
+    color: #ffd966;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.dilemma-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.dilemma-item {
+    background: #1d3649;
+    border-radius: 1rem;
+    padding: 1rem;
+    border: 1px solid #6ab0e6;
+}
+
+.dilemma-text {
+    margin-bottom: 0.5rem;
+    color: #e0edf5;
+}
+
+.dilemma-answer {
+    display: inline-block;
+    background: #022b49;
+    padding: 0.2rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #b5dcff;
+}
+
+.tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 1.5rem 0;
+    justify-content: center;
+}
+
+.tag {
+    background: #1d3649;
+    border: 1px solid #6ab0e6;
+    border-radius: 2rem;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.9rem;
+    color: #b5dcff;
+}
+
+.results-block {
+    background: #1d3649;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: #e0edf5;
+}
+
+.topic4-action {
+    background: #022b49;
+    border-color: #6ab0e6;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .specialty-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .items-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .clap-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dilemma-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ranks-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .rank-card {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .benefits-grid[style*="grid-template-columns: repeat(3, 1fr)"] {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .topic-title {
+        font-size: 1.5rem;
+    }
+    
+    .action-link {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+    }
+    
+    .call-to-action h3 {
+        font-size: 1.5rem;
+    }
+}
+/* ========== СТИЛИ ДЛЯ ТЕМЫ 5 (Космическая отрасль) ========== */
+
+.topic5-hero {
+    background: #0a0f1e;
+}
+
+.topic5-header {
+    background: linear-gradient(145deg, #0b1a3a 0%, #1a2f4f 100%);
+    border-color: #4a6fa5;
+}
+
+.topic5-card {
+    background: #141c2c;
+}
+
+.topic5-commander {
+    background: #1b2538;
+    border-left-color: #4a6fa5;
+}
+
+.topic5-commander .commander-text {
+    color: #e0e5f0;
+}
+
+.topic5-commander .commander-text strong {
+    color: #8bb5ff;
+}
+
+.topic5-commander .commander-text em {
+    background: #252f45;
+    color: #b0c9ff;
+}
+
+.topic5-video {
+    background: #1e3a6f;
+    border-color: #4a6fa5;
+}
+
+.topic5-slide {
+    background: #1b2538;
+    border-color: #4a6fa5;
+}
+
+.topic5-audio {
+    background: #1b2538;
+    border-color: #4a6fa5;
+}
+
+.topic5-award {
+    background: #1a2a3f;
+    border-color: #4a6fa5;
+}
+
+/* ========== СТИЛИ ДЛЯ ТЕМЫ 6 (Агропром) ========== */
+
+.topic6-hero {
+    background: #e2f0d9;
+}
+
+.topic6-header {
+    background: linear-gradient(145deg, #1b4d1b 0%, #2e7d32 100%);
+    border-color: #ffd966;
+}
+
+.topic6-header .topic-title {
+    color: #fef7e6;
+}
+
+.topic6-card {
+    background: #fdfaf5;
+}
+
+.topic6-commander {
+    background: #f5efe6;
+    border-left-color: #ffd966;
+}
+
+.topic6-commander .commander-text {
+    color: #1e3a2b;
+}
+
+.topic6-commander .commander-text strong {
+    color: #2e7d32;
+}
+
+.topic6-commander .commander-text em {
+    background: #e9d6b5;
+    color: #7a5a40;
+}
+
+.topic6-video {
+    background: #1b4d1b;
+    border-color: #ffd966;
+}
+
+.topic6-video .video-title,
+.topic6-video p {
+    color: #fef7e6;
+}
+
+.topic6-slide {
+    background: #f5efe6;
+    border-color: #ffd966;
+}
+
+.topic6-summary {
+    background: #e2f0d9;
+    border-color: #ffd966;
+}
+
+.topic6-summary .slide-title {
+    color: #1b4d1b;
+}
+/* ========== СТИЛИ ДЛЯ ТЕМЫ 7 (Энергетика) ========== */
+
+.topic7-hero {
+    background: #e7f0f2;
+}
+
+.topic7-header {
+    background: linear-gradient(145deg, #003153 0%, #1b4a6b 100%);
+    border-color: #f4c542;
+}
+
+.topic7-header .topic-title {
+    color: #fef6e6;
+}
+
+.topic7-card {
+    background: #fdfaf5;
+}
+
+.topic7-commander {
+    background: #f5efe6;
+    border-left-color: #f4c542;
+}
+
+.topic7-commander .commander-text {
+    color: #1e2f3d;
+}
+
+.topic7-commander .commander-text strong {
+    color: #1b4a6b;
+}
+
+.topic7-commander .commander-text em {
+    background: #e9d6b5;
+    color: #7a5a40;
+}
+
+.topic7-video {
+    background: #003153;
+    border-color: #f4c542;
+}
+
+.topic7-video .video-title,
+.topic7-video p {
+    color: #fef6e6;
+}
+
+.topic7-slide {
+    background: #f5efe6;
+    border-color: #f4c542;
+}
+
+.topic7-handout {
+    background: #e1eff5;
+    border-color: #f4c542;
+}
+
+.topic7-handout .handout-title {
+    color: #003153;
+}
+
+/* ========== СТИЛИ ДЛЯ ТЕМЫ 8 (Граф Комаровский) ========== */
+
+.topic8-hero {
+    background: #f0ebe2;
+}
+
+.topic8-header {
+    background: linear-gradient(145deg, #1a2e3f 0%, #2b4a5c 100%);
+    border-color: #c9a45a;
+}
+
+.topic8-header .topic-title {
+    color: #f5e7d9;
+}
+
+.topic8-card {
+    background: #fdfaf5;
+}
+
+.topic8-commander {
+    background: #f5efe6;
+    border-left-color: #c9a45a;
+}
+
+.topic8-commander .commander-text {
+    color: #2c2a24;
+}
+
+.topic8-commander .commander-text strong {
+    color: #2b4a5c;
+}
+
+.topic8-commander .commander-text em {
+    background: #e9d6b5;
+    color: #7a5a40;
+}
+
+.topic8-video {
+    background: #1a2e3f;
+    border-color: #c9a45a;
+}
+
+.topic8-video .video-title,
+.topic8-video p {
+    color: #f5e7d9;
+}
+
+.topic8-slide {
+    background: #f5efe6;
+    border-color: #c9a45a;
+}
+
+.topic8-handout {
+    background: #e9d6b5;
+    border-color: #c9a45a;
+}
+
+.topic8-handout .handout-title {
+    color: #1a2e3f;
+}
+/* ========== ТЕМА 9 (Оборонная промышленность) ========== */
+.topic9-hero { background: #1e3a5f; }
+.topic9-header { background: linear-gradient(145deg, #2f4f4f 0%, #3a6b6b 100%); border-color: #4a6fa5; }
+.topic9-card { background: #141c2c; }
+.topic9-commander { background: #1b2538; border-left-color: #4a6fa5; }
+.topic9-commander .commander-text { color: #e0e5f0; }
+.topic9-commander .commander-text strong { color: #8bb5ff; }
+.topic9-video { background: #1e3a6f; border-color: #4a6fa5; }
+.topic9-slide { background: #1b2538; border-color: #4a6fa5; }
+
+/* ========== ТЕМА 10 (Настоящий кадет) ========== */
+.topic10-hero { background: #f5f1e8; }
+.topic10-header { background: linear-gradient(145deg, #3d2b1a 0%, #5e3e2b 100%); border-color: #b4945a; }
+.topic10-card { background: #fefaf5; }
+.topic10-commander { background: #f5efe6; border-left-color: #b4945a; }
+.topic10-commander .commander-text { color: #2f2a24; }
+.topic10-commander .commander-text strong { color: #5e3e2b; }
+.topic10-video { background: #3d2b1a; border-color: #b4945a; }
+.topic10-slide { background: #f5efe6; border-color: #b4945a; }
+
+/* ========== ТЕМА 11 (Космическая отрасль) ========== */
+.topic11-hero { background: #0a0f1e; }
+.topic11-header { background: linear-gradient(145deg, #0b1a3a 0%, #1a2f4f 100%); border-color: #4a6fa5; }
+.topic11-card { background: #141c2c; }
+.topic11-commander { background: #1b2538; border-left-color: #4a6fa5; }
+.topic11-commander .commander-text { color: #e0e5f0; }
+.topic11-commander .commander-text strong { color: #8bb5ff; }
+.topic11-video { background: #1e3a6f; border-color: #4a6fa5; }
+.topic11-slide { background: #1b2538; border-color: #4a6fa5; }
+
+/* ========== ТЕМА 12 (Кинологическая служба) ========== */
+.topic12-hero { background: #2b4a3d; }
+.topic12-header { background: linear-gradient(145deg, #1d3b2a 0%, #345e40 100%); border-color: #b9a063; }
+.topic12-card { background: #1f3a2c; }
+.topic12-commander { background: #26432e; border-left-color: #b9a063; }
+.topic12-commander .commander-text { color: #e0e5f0; }
+.topic12-commander .commander-text strong { color: #d9c88a; }
+.topic12-video { background: #1d3b2a; border-color: #b9a063; }
+.topic12-slide { background: #26432e; border-color: #b9a063; }
+.topic12-guest { background: #26432e; border-left: 6px solid #b9a063; border-radius: 1.5rem; padding: 1.5rem; }
